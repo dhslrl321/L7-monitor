@@ -1,15 +1,15 @@
 import os
 import sys
 import datetime
-import pymysql
 
+## *ROOT_DIR는 개인별 websvr_attack 폴더 저장되어있는 디렉토리로 설정 요망
 ROOT_DIR = "C:/Users/jenny/projects/"
 LOG_DIR = "websvr_attack/"
-servers = ["Server1/", "Server2/", "Server3/", "Server4/"]
 
 BASE = ROOT_DIR+LOG_DIR
 
-def convert_timestamp(timestamp):
+# UTC -> Asia/Seoul
+def convert_timezone(timestamp):
     # ex : 07/Feb/2017:01:13:08 +0900
     timestamp = timestamp.replace('+', " ")
     ts, gap = timestamp.split()
@@ -22,8 +22,8 @@ def convert_timestamp(timestamp):
 
     return result.strftime('%Y-%m-%d %H:%M:%S')
 
-
-def ssl_parse(path):
+# parse ssl_request_log format
+def parse_ssl(path):
     with open(path) as f:
         for line in f.readlines():
             try:
@@ -43,7 +43,7 @@ def ssl_parse(path):
                 # timestamp + ip
                 block1 = block1.replace('[', ',').replace(']', ',')
                 block1 = block1.split(",")
-                obj["timestamp"] = convert_timestamp(block1[1])
+                obj["timestamp"] = convert_timezone(block1[1])
 
                 block1 = block1[2].split()
                 obj["ip"] = block1[0][2:]
@@ -58,14 +58,14 @@ def ssl_parse(path):
                     f.write(f"{e}::{line}")
 
 
-
+# parse normal format
 def parse(root, filename):
     path = root+"/"+filename
     if "error" in filename:
         return
 
     if "ssl_request_log" in filename:
-        ssl_parse(path)
+        parse_ssl(path)
         return
 
     with open(path) as f:
@@ -86,7 +86,7 @@ def parse(root, filename):
                 # ip + userid + timestamp
                 block1 = block1.replace('[', ',').replace(']', ',')
                 block1 = block1.split(",")
-                obj["timestamp"] = convert_timestamp(block1[1])
+                obj["timestamp"] = convert_timezone(block1[1])
                 print(block1[1], obj["timestamp"])
 
                 block1 = block1[0].split()
