@@ -4,7 +4,7 @@ import datetime
 import detector as dt
 
 ## *ROOT_DIR는 개인별 websvr_attack 폴더 저장되어있는 디렉토리로 설정 요망
-ROOT_DIR = "C:/Users/jenny/projects/"
+ROOT_DIR = "C:/Users/*/projects/"
 LOG_DIR = "websvr_attack/"
 BASE = ROOT_DIR+LOG_DIR
 
@@ -40,16 +40,34 @@ def parse_ssl(root, filename):
                 block3 :  res_data_size
                 """
 
-                block1, block2, block3 = line.split("\"")
+                # block1, block2, block3 = line.split("\"")         # block2에 \" 포함되어서 생기는 파싱 오류로 인해 변경
+                idx_1 = line.find("\"")
+                idx_2 = idx_1
+                while True:
+                    idx_2 = line[idx_2+1:].find("\"") + idx_2 + 1
+                    if line[idx_2-1] != "\\":
+                        break
+                block1 = line[:idx_1]
+                block2 = line[idx_1+1:idx_2]
+                block3 = line[idx_2+1:]
+
 
                 # block2
                 if block2 != "-":
-                    block2 = block2.split()
-                    obj["method"] = block2[0]
-                    obj["uri"] = block2[1]
+                    # block2 = block2.split()                       # uri 내부에 space 있는 경우 파싱 오류로 인해 변경
+                    # obj["method"] = block2[0]
+                    # obj["uri"] = block2[1]
+                    
+                    idx = block2.index(" ")
+                    obj["method"] = block2[:idx]
+                    obj["uri"] = block2[idx+1:]
 
-                    # filter sql_injection & rfi
-                    if dt.is_sql_injection(obj["method"], obj["uri"]):
+                    # filter xss & sql_injection & rfi
+                    if dt.is_xss(obj["method"], obj["uri"]):
+                        with open("xss.log", 'a') as f:
+                            f.write(f"{filename}::{line}")
+                        continue
+                    elif dt.is_sql_injection(obj["method"], obj["uri"]):
                         with open("sql_injection.log", 'a') as f:
                             f.write(f"{filename}::{line}")
                         continue
@@ -117,16 +135,33 @@ def parse(root, filename):
                     3 - user-agent
                 """
                 
-                block1, block2, *block3 = line.split("\"")
+                # block1, block2, *block3 = line.split("\"")        # block2에 \" 포함되어서 생기는 파싱 오류로 인해 변경
+                idx_1 = line.find("\"")
+                idx_2 = idx_1
+                while True:
+                    idx_2 = line[idx_2+1:].find("\"") + idx_2 + 1
+                    if line[idx_2-1] != "\\":
+                        break
+                block1 = line[:idx_1]
+                block2 = line[idx_1+1:idx_2]
+                block3 = line[idx_2+1:].split("\"")
 
                 # block2
                 if block2 != "-":
-                    block2 = block2.split()
-                    obj["method"] = block2[0]
-                    obj["uri"] = block2[1]
+                    # block2 = block2.split()                       # uri 내부에 space 있는 경우 파싱 오류로 인해 변경
+                    # obj["method"] = block2[0]
+                    # obj["uri"] = block2[1]
+                    
+                    idx = block2.index(" ")
+                    obj["method"] = block2[:idx]
+                    obj["uri"] = block2[idx+1:]
 
-                    # filter sql_injection & rfi
-                    if dt.is_sql_injection(obj["method"], obj["uri"]):
+                    # filter xss & sql_injection & rfi
+                    if dt.is_xss(obj["method"], obj["uri"]):
+                        with open("xss.log", 'a') as f:
+                            f.write(f"{filename}::{line}")
+                        continue
+                    elif dt.is_sql_injection(obj["method"], obj["uri"]):
                         with open("sql_injection.log", 'a') as f:
                             f.write(f"{filename}::{line}")
                         continue

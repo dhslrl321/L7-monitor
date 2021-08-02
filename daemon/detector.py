@@ -34,3 +34,13 @@ def is_rfi(method, uri):
 # input format: previous log byte count, current log byte count
 def is_wshell(curr_byte, prev_byte):
     return abs(curr_byte - prev_byte) > 100000
+
+
+def is_xss(method, uri):
+    if method != "GET": return False
+
+    rules = ["script", "<", ">", "&lt;", "&gt;", "eval", "alert"]
+    for rule in rules:
+        if rule in uri : return True
+
+    return False
