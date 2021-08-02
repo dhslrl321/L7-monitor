@@ -1,12 +1,14 @@
 import os
 import sys
 import datetime
+import detector as dt
 
 ## *ROOT_DIR는 개인별 websvr_attack 폴더 저장되어있는 디렉토리로 설정 요망
 ROOT_DIR = "C:/Users/jenny/projects/"
 LOG_DIR = "websvr_attack/"
-
 BASE = ROOT_DIR+LOG_DIR
+
+current_byte = 0 
 
 # UTC -> Asia/Seoul
 def convert_timezone(timestamp):
@@ -23,12 +25,25 @@ def convert_timezone(timestamp):
     return result.strftime('%Y-%m-%d %H:%M:%S')
 
 # parse ssl_request_log format
-def parse_ssl(path):
+def parse_ssl(root, filename):
+    path = root + "/" + filename
+
     with open(path) as f:
-        for line in f.readlines():
+        prev_byte = sys.getsizeof(f.readline())
+
+        for line in f.readlines()[1:]:
             try:
                 obj = {}
 
+                # filter webshell
+                curr_byte = sys.getsizeof(line)
+                if dt.is_wshell(prev_byte, curr_byte):
+                    prev_byte = curr_byte
+                    with open("wshell.log", 'a') as f:
+                        f.write(f"{filename}::{line}")
+                    continue
+
+                prev_byte = curr_byte
                 block1, block2, block3 = line.split("\"")
 
                 # block2
@@ -37,7 +52,19 @@ def parse_ssl(path):
                     block2 = block2.split()
                     obj["method"] = block2[0]
                     obj["uri"] = block2[1]
+
+                    # filter sql_injection & rfi
+                    if dt.is_sql_injection(obj["method"], obj["uri"]):
+                        with open("sql_injection.log", 'a') as f:
+                            f.write(f"{filename}::{line}")
+                        continue
+                    elif dt.is_rfi(obj["method"], obj["uri"]):
+                        with open("rfi.log", 'a') as f:
+                            f.write(f"{filename}::{line}")
+                        continue
+
                     obj["protocol"] = block2[2]
+                
 
                 # block1
                 # timestamp + ip
@@ -54,7 +81,7 @@ def parse_ssl(path):
                 obj["res_data_size"] = block3
 
             except Exception as e:
-                with open("error.log", 'a') as f:
+                with open("unknown.log", 'a') as f:
                     f.write(f"{e}::{line}")
 
 
@@ -65,21 +92,44 @@ def parse(root, filename):
         return
 
     if "ssl_request_log" in filename:
-        parse_ssl(path)
+        parse_ssl(root, filename)
         return
 
     with open(path) as f:
-        for line in f.readlines():
+        prev_byte = sys.getsizeof(f.readline())
+
+        for line in f.readlines()[1:]:
             try:
                 obj = {}
+
+                # filter webshell
+                curr_byte = sys.getsizeof(line)
+                if dt.is_wshell(prev_byte, curr_byte):
+                    prev_byte = curr_byte
+                    with open("wshell.log", 'a') as f:
+                        f.write(f"{filename}::{line}")
+                    continue
+
+                prev_byte = curr_byte
                 block1, block2, *block3 = line.split("\"")
 
                 # block2
                 # method + uri + protocol
-                if len(block2) != 1:
+                if block2 != "-":
                     block2 = block2.split()
                     obj["method"] = block2[0]
                     obj["uri"] = block2[1]
+
+                    # filter sql_injection & rfi
+                    if dt.is_sql_injection(obj["method"], obj["uri"]):
+                        with open("sql_injection.log", 'a') as f:
+                            f.write(f"{filename}::{line}")
+                        continue
+                    elif dt.is_rfi(obj["method"], obj["uri"]):
+                        with open("rfi.log", 'a') as f:
+                            f.write(f"{filename}::{line}")
+                        continue
+
                     obj["protocol"] = block2[2]
 
                 # block1
@@ -87,7 +137,6 @@ def parse(root, filename):
                 block1 = block1.replace('[', ',').replace(']', ',')
                 block1 = block1.split(",")
                 obj["timestamp"] = convert_timezone(block1[1])
-                print(block1[1], obj["timestamp"])
 
                 block1 = block1[0].split()
                 obj["ip"] = block1[0][2:]
@@ -95,7 +144,6 @@ def parse(root, filename):
                 for element in block1[1:]:
                     if element != "-":
                         obj["userid"] = element
-
 
                 # block3 list
                 # 0: res_code + res_data_size
@@ -116,7 +164,7 @@ def parse(root, filename):
                     obj["user_agent"] = user_agent
 
             except Exception as e:
-                with open("error.log", 'a') as f:
+                with open("unknown.log", 'a') as f:
                     f.write(f"{e}::{line}")
 
 
