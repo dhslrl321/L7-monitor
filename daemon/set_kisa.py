@@ -4,7 +4,7 @@ import datetime
 import detector as dt
 
 ## *ROOT_DIR는 개인별 websvr_attack 폴더 저장되어있는 디렉토리로 설정 요망
-ROOT_DIR = "C:/Users/*/projects/"
+ROOT_DIR = "C:/Users/jenny/projects/"
 LOG_DIR = "websvr_attack/"
 BASE = ROOT_DIR+LOG_DIR
 
@@ -26,8 +26,6 @@ def convert_timezone(timestamp):
 # parse ssl_request_log format
 def parse_ssl(root, filename):
     path = root + "/" + filename
-    prev_size = 0
-
     with open(path) as f:
 
         for line in f.readlines():
@@ -75,24 +73,19 @@ def parse_ssl(root, filename):
                         with open("rfi.log", 'a') as f:
                             f.write(f"{filename}::{line}")
                         continue
+                    elif dt.is_wshell(obj["uri"]):
+                        with open("wshell.log", 'a') as f:
+                            f.write(f"{filename}::{line}")
+                        continue
 
                     obj["protocol"] = block2[2]
                 
                 # block3
                 # filter webshell
                 res_data_size = block3.replace("\n", "").replace(" ", "")
-                if not res_data_size.isdecimal():
-                    prev_size = 0
-                else:
+                if res_data_size.isdecimal():
                     res_data_size = int(res_data_size)
                     obj["res_data_size"] = res_data_size
-
-                    if dt.is_wshell(res_data_size, prev_size):
-                        prev_size = res_data_size
-                        with open("wshell.log", 'a') as f:
-                            f.write(f"{filename}::{line}")
-                        continue
-                    prev_size = res_data_size
 
                 # block1
                 block1 = block1.replace('[', ',').replace(']', ',')
@@ -110,7 +103,6 @@ def parse_ssl(root, filename):
 # parse normal format
 def parse(root, filename):
     path = root+"/"+filename
-    prev_size = 0
 
     # is error logs
     if "error" in filename:
@@ -169,6 +161,10 @@ def parse(root, filename):
                         with open("rfi.log", 'a') as f:
                             f.write(f"{filename}::{line}")
                         continue
+                    elif dt.is_wshell(obj["uri"]):
+                        with open("wshell.log", 'a') as f:
+                            f.write(f"{filename}::{line}")
+                        continue
 
                     obj["protocol"] = block2[2]
 
@@ -178,19 +174,10 @@ def parse(root, filename):
                     obj["res_code"] = res_code
 
                 # filter webshell
-                if not res_data_size.isdecimal():
-                    prev_size = 0
-                else:
+                if res_data_size.isdecimal():
                     res_data_size = int(res_data_size)
                     obj["res_data_size"] = res_data_size
 
-                    if dt.is_wshell(res_data_size, prev_size):
-                        prev_size = res_data_size
-                        with open("wshell.log", 'a') as f:
-                            f.write(f"{filename}::{line}")
-
-                    prev_size = res_data_size
-                    continue
                 
                 # block1
                 block1 = block1.replace('[', ',').replace(']', ',')
