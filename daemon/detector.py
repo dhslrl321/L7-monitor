@@ -32,8 +32,13 @@ def is_rfi(method, uri):
     return False
 
 # input format: previous log byte count, current log byte count
-def is_wshell(curr_byte, prev_byte):
-    return abs(curr_byte - prev_byte) > 100000
+def is_wshell(uri):
+    # return abs(curr_byte - prev_byte) > 100000
+    rules = ["system", "passthru", "shell_exec", "popen", "proc_open"] # execute command funcs 
+    for rule in rules:
+        if rule in uri : return True
+
+    return False
 
 
 def is_xss(method, uri):
