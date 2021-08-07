@@ -1,6 +1,7 @@
 import os
 import sys
 import log_parser as lp
+import test_parser as tp
 
 ## *ROOT_DIR는 개인별 websvr_attack 폴더 저장되어있는 디렉토리로 설정 요망
 ROOT_DIR = "C:/Users/jenny/projects/"
@@ -9,9 +10,9 @@ BASE = ROOT_DIR+LOG_DIR
 
 def work(root, filename):
     if "ssl_request_log" in filename:
-        lp.parse_ssl(root, filename)
+        tp.parse_ssl(root, filename)
     else:
-        lp.parse_normal(root, filename)
+        tp.parse_normal(root, filename)
 
 def main():
     for (root,_,files) in os.walk(BASE):

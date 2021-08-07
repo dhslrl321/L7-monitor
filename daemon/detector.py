@@ -2,6 +2,8 @@
 
 # input format: GET /uri... 
 def is_sql_injection(method, uri):
+    if not method: return False
+    if not uri: return False
     if method != "GET": return False
 
     rules = ["\'", "%27", "%20", "UNION", "+"]
@@ -18,7 +20,9 @@ def is_sql_injection(method, uri):
 
 # input format: GET /uri... 
 def is_rfi(method, uri):
-    if method != "GET ": return False
+    if not method: return False
+    if not uri: return False
+    if method != "GET": return False
 
     rules = [".", "%00", "/", "http"]
 
@@ -34,6 +38,8 @@ def is_rfi(method, uri):
 # input format: previous log byte count, current log byte count
 ## 공격 명령어 실행함수 탐지 방식으로 변경
 def is_wshell(uri):
+    if not uri: return False
+
     rules = ["system", "passthru", "shell_exec", "popen", "proc_open"] # execute command funcs 
     for rule in rules:
         if rule in uri : return True
@@ -42,6 +48,8 @@ def is_wshell(uri):
 
 
 def is_xss(method, uri):
+    if not method: return False
+    if not uri: return False
     if method != "GET": return False
 
     rules = ["script", "<", ">", "&lt;", "&gt;", "eval", "alert"]
