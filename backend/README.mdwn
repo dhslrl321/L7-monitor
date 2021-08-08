@@ -1,0 +1,35 @@
+# Log 분석 웹 백엔드
+
+- backend api & 기능 명세
+- check-list
+
+## 기능 목록
+
+- 총 4개의 칼럼
+  - **오늘의 트래픽 요약 Column**
+    - 모든 트래픽 수 : `/api/traffic/summary/all` **GET**
+    - 공격 트래픽 수 : `/api/traffic/summary/threat` **GET**
+    - 오늘의 보안 레벨 : `/api/traffic/summary/level` **GET**
+  - **Main 트래픽 Dashboard**
+    - 현재 시간 -24 시간의 트래픽 량 : `/api/traffic` **GET**
+  - **Log 검색하기**
+    - 최근의 모든 로그 확인하고 정렬 및 검색 : `/api/log` **GET**
+  - **공격 유형 Dashboard**
+    - 최근의 공격 유형
+      1. xss : `/api/threat/xss` **GET**
+      2. web shell : `/api/threat/wshell` **GET**
+      3. sql injection : `/api/threat/sqli` **GET**
+      4. improper request - status code 가 올바르지 않은 경우 : `/api/threat/improper` **GET**
+
+## API
+
+- `/api/traffic/`
+- `/api/traffic/summary/{type}`
+- `/api/log`
+- `/api/threat/{type}`
+
+## Service
+
+- TrafficService
+- LogService
+- ThreatService
