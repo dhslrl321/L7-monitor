@@ -1,9 +1,12 @@
 package com.example.l7monitor.service;
 
 import com.example.l7monitor.domain.dto.TotalTrafficResponse;
+import com.example.l7monitor.domain.entity.Abnormal;
 import com.example.l7monitor.domain.entity.Normal;
+import com.example.l7monitor.domain.repository.AbnormalRepository;
 import com.example.l7monitor.domain.repository.NormalRepository;
 import com.example.l7monitor.domain.type.PeriodType;
+import com.example.l7monitor.domain.type.TrafficType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +23,11 @@ import java.util.stream.IntStream;
 public class TrafficService {
 
     private NormalRepository normalRepository;
+    private AbnormalRepository abnormalRepository;
 
-    public TrafficService(NormalRepository normalRepository) {
+    public TrafficService(NormalRepository normalRepository, AbnormalRepository abnormalRepository) {
         this.normalRepository = normalRepository;
+        this.abnormalRepository = abnormalRepository;
     }
 
     /**
@@ -54,6 +59,30 @@ public class TrafficService {
         }
 
         return response;
+    }
+
+    /**
+     * 현재를 기준으로 24시간 이내의 모든 비정상 요청의 개수를 출력한다.
+     *
+     * @param trafficType 트래픽 유형
+     * @return 현재 시간으로부터 -24 시간의 모든 비정상 로그의 개수를 반환한다.
+     */
+    public TotalTrafficResponse getTodayTrafficSummaries(TrafficType trafficType) {
+        LocalDateTime from = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.now());
+
+        long count = 0;
+
+        if(trafficType.equals(TrafficType.ALL)) {
+            count = normalRepository.countByTimestampBetween(from, LocalDateTime.now());
+        } else if (trafficType.equals(TrafficType.THREAT)) {
+            count = abnormalRepository.countByTimestampBetween(from, LocalDateTime.now());
+        }
+
+        return TotalTrafficResponse.builder()
+                .id(1L)
+                .count(count)
+                .timestamp(from)
+                .build();
     }
 
     private static LocalDateTime minusTimeByType(PeriodType periodType, LocalDateTime time) {

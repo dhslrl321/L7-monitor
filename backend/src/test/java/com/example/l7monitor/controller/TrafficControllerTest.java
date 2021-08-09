@@ -2,8 +2,8 @@ package com.example.l7monitor.controller;
 
 import com.example.l7monitor.domain.dto.TotalTrafficResponse;
 import com.example.l7monitor.domain.type.PeriodType;
+import com.example.l7monitor.domain.type.TrafficType;
 import com.example.l7monitor.service.TrafficService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,14 +13,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.net.http.HttpHeaders;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -43,6 +41,19 @@ class TrafficControllerTest {
 
     @BeforeEach
     void setUp() {
+
+        TotalTrafficResponse todayAllTraffic = TotalTrafficResponse.builder()
+                .id(1L)
+                .timestamp(LocalDateTime.now().minusDays(1))
+                .count(78921L)
+                .build();
+
+        TotalTrafficResponse todayThreatTraffic = TotalTrafficResponse.builder()
+                .id(1L)
+                .timestamp(LocalDateTime.now().minusDays(1))
+                .count(821L)
+                .build();
+
         given(trafficService.getTrafficCountByPeriod(PeriodType.WEEK))
                 .willReturn(WEEK);
 
@@ -51,6 +62,12 @@ class TrafficControllerTest {
 
         given(trafficService.getTrafficCountByPeriod(PeriodType.FIVE_MINUTE))
                 .willReturn(FIVE_MINUTE);
+
+        given(trafficService.getTodayTrafficSummaries(TrafficType.ALL))
+                .willReturn(todayAllTraffic);
+
+        given(trafficService.getTodayTrafficSummaries(TrafficType.THREAT))
+                .willReturn(todayThreatTraffic);
     }
 
     @Test
@@ -67,7 +84,7 @@ class TrafficControllerTest {
     @DisplayName("일간 단위 요청")
     void getTotalTraffic_day_valid() throws Exception {
         mockMvc.perform(get("/api/traffics/{period}", PeriodType.DAY.toString())
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("[0].id").exists());
@@ -77,10 +94,34 @@ class TrafficControllerTest {
     @DisplayName("5분 단위 요청")
     void getTotalTraffic_five_minute_valid() throws Exception {
         mockMvc.perform(get("/api/traffics/{period}", PeriodType.FIVE_MINUTE.toString())
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("[0].id").exists());
+    }
+
+    @Test
+    @DisplayName("오늘의 모든 정상 트래픽 개수 요청")
+    void getTodayNormalTraffic() throws Exception {
+        mockMvc.perform(get("/api/traffics/summaries/{type}", TrafficType.ALL.toString())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("count").exists())
+        ;
+    }
+
+    @Test
+    @DisplayName("오늘의 모든 비정상 트래픽 개수 요청")
+    void getTodayAbnormalTraffic() throws Exception {
+        mockMvc.perform(get("/api/traffics/summaries/{type}", TrafficType.THREAT.toString())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("count").exists())
+        ;
     }
 
     private static List<TotalTrafficResponse> generateTotalTrafficResponseByType(PeriodType periodType) {

@@ -37,8 +37,11 @@
     - 5분 단위 : 40분 전 까지
     - 1시간 단위 : 8시간 전 까지
     - 하루 단위 : 8일 전 까지
-- LogService
 - ThreatService
+  - 오늘의 모든 트래픽 수 : countByTimestamp(from, to) 를 이용
+  - 오늘의 모든 공격 트래픽 수 : countByTimestamp(from, to) 이용
+  - 오늘의 보안 레벨 : ??
+- LogService
 
 ## Todo & Check List
 
@@ -46,10 +49,15 @@
 - [x] application.yml 생성 및 db 설정 & 연결
 - [x] normal 테이블 구성
 - [x] DateTime & LocalDateTime 비교 및 파싱
-- [x] 시간대 별로 Traffic 카운트 반환
-  - [x] TrafficService 구현 및 테스트 코드 작성
-    - [x] `ParameterizedTest` 로 각각의 PeriodType 마다의 테스트 자동화
-  - [x] DTO 생성 (id, count, timestamp)
-  - [ ] TrafficController 구현 및 테스트 코드 작성
-  - [ ] 테스트 커버리지 90% 이상 달성
+- **TrafficService**
+  - Main 트래픽 Dashboard
+    - [x] TrafficService 구현 및 테스트 코드 작성
+      - [x] `ParameterizedTest` 로 각각의 PeriodType 마다의 테스트 자동화
+    - [x] DTO 생성 (id, count, timestamp)
+    - [x] TrafficController 구현 및 테스트 코드 작성
+    - [x] 테스트 커버리지 90% 이상 달성
+  - 오늘의 트래픽 요약 Column
+    - [ ] Abnormal 테이블 구성
+    - [ ] 공격 트래픽 수 작성
+    - [ ] 오늘의 보안 레벨
 

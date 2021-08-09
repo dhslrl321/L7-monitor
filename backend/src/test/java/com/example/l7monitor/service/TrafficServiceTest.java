@@ -1,8 +1,10 @@
 package com.example.l7monitor.service;
 
 import com.example.l7monitor.domain.dto.TotalTrafficResponse;
+import com.example.l7monitor.domain.repository.AbnormalRepository;
 import com.example.l7monitor.domain.repository.NormalRepository;
 import com.example.l7monitor.domain.type.PeriodType;
+import com.example.l7monitor.domain.type.TrafficType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,14 +26,18 @@ class TrafficServiceTest {
     private TrafficService trafficService;
 
     private final NormalRepository normalRepository = mock(NormalRepository.class);
+    private final AbnormalRepository abnormalRepository = mock(AbnormalRepository.class);
 
     @BeforeEach
     void init() {
 
-        trafficService = new TrafficService(normalRepository);
+        trafficService = new TrafficService(normalRepository, abnormalRepository);
 
         given(normalRepository.countByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class)))
                 .willReturn(5L);
+        
+        given(abnormalRepository.countByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class)))
+                .willReturn(7L);
     }
 
     @ParameterizedTest
@@ -42,7 +48,6 @@ class TrafficServiceTest {
                 .getTrafficCountByPeriod(periodType);
 
         TotalTrafficResponse firstTotalResponseData = response.get(0);
-        TotalTrafficResponse secondTotalResponseData = response.get(0);
 
         assertAll(
                 () -> assertEquals(8, response.size()),
@@ -59,6 +64,29 @@ class TrafficServiceTest {
                 () -> trafficService.getTrafficCountByPeriod(null));
 
         assertEquals(NullPointerException.class, exception.getClass());
+    }
+
+    @ParameterizedTest
+    @DisplayName("오늘 하루의 비정상 로그 개수 출력 - 성공")
+    @MethodSource("paramsForGetTodayTrafficSummariesValid")
+    void getTodayTrafficSummaries_valid(TrafficType trafficType) {
+        TotalTrafficResponse response = trafficService
+                .getTodayTrafficSummaries(trafficType);
+
+        long count = trafficType.equals(TrafficType.ALL) ? 5 : 7;
+
+        assertAll(
+                () -> assertEquals(1, response.getId()),
+                () -> assertEquals(count, response.getCount()),
+                () -> assertNotNull(response.getTimestamp())
+        );
+    }
+
+    private static Stream<Arguments> paramsForGetTodayTrafficSummariesValid() {
+        return Stream.of(
+                Arguments.of(TrafficType.ALL),
+                Arguments.of(TrafficType.THREAT)
+        );
     }
 
     private static Stream<Arguments> paramsForGetTrafficCountByPeriodWithValid() {
