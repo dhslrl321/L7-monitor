@@ -1,19 +1,34 @@
+from set_kisa import TEST_RESULT_DIR
 import datetime
 import detector as dt
+import re
+
+normal_exp = r"(?P<ip>.*) (?P<remote_log_name>.*?)(%s|%s.*?%s)?(?P<userid>.*?) \[(?P<date>.*?)(?= ) (?P<timezone>.*?)\] \"(?P<request>(?P<method>[A-Z]+) (?P<uri>.*)? (?P<protocol>HTTPS?/[0-9.]+)?|-)\" (?P<status_code>\d{3})? (?P<res_data_size>\d*|-)?( (\"(?P<referer>.*?)\") (\"(?P<user_agent>.*?)\"))?"
+ssl_exp = r"\[(?P<date>.*?)(?= ) (?P<timezone>.*?)\] (?P<ip>.*) (.*?) (.*?) \"(?P<request>(?P<method>[A-Z]+) (?P<uri>.*)? (?P<protocol>HTTPS?/[0-9.]+)?|-)\" (?P<res_data_size>\d*|-)?"
+
+np = re.compile(normal_exp)
+sp = re.compile(ssl_exp)
 
 # UTC -> Asia/Seoul
-def convert_timezone(timestamp):
+def convert_timezone(date, timezone):
     # ex : 07/Feb/2017:01:13:08 +0900
-    timestamp = timestamp.replace('+', " ")
-    ts, gap = timestamp.split()
 
-    gap = int(gap[:2])
-    utc = datetime.datetime.strptime(ts, '%d/%b/%Y:%H:%M:%S')
+    timezone = int(timezone[:2])
+    utc = datetime.datetime.strptime(date, '%d/%b/%Y:%H:%M:%S')
     
-    gap = datetime.timedelta(hours=gap)
-    result = utc + gap
+    timezone = datetime.timedelta(hours=timezone)
+    result = utc + timezone
 
     return result.strftime('%Y-%m-%d %H:%M:%S')
+
+
+# filter xss & sql_injection & rfi
+def get_malcode(obj):
+    if dt.is_xss(obj["method"], obj["uri"]): return 4
+    elif dt.is_sql_injection(obj["method"], obj["uri"]): return 1
+    elif dt.is_rfi(obj["method"], obj["uri"]): return 2
+    elif dt.is_wshell(obj["uri"]): return 3
+    return -1
 
 
 # parse normal format
@@ -23,94 +38,39 @@ def parse_normal(root, filename):
     with open(path) as f:
         for line in f.readlines():
             try:
+                line.replace('"', '\"')
+                result = np.match(line)
+
                 obj = {}
+                obj['ip'] = result.group('ip')
+                obj['userid'] = result.group('userid')
+                obj['timestamp'] = convert_timezone(result.group('date'), result.group('timezone'))
 
-                """
-                block1 : ip + userid + timestamp
-                block2 : method + uri + protocol
-                block3 : 
-                    0 - res_code + res_data_size
-                    1 - referer
-                    3 - user-agent
-                """
+                obj['method'] = result.group('method')
+                obj['uri'] = result.group('uri')
+                obj['protocol'] = result.group('protocol')
+            
+                obj['res_data_size'] = result.group('res_data_size')
+
+                if (referer := result.group('referer')):
+                    obj['referer'] = referer
                 
-                # block1, block2, *block3 = line.split("\"")        # block2에 \" 포함되어서 생기는 파싱 오류로 인해 변경
-                idx_1 = line.find("\"")
-                idx_2 = idx_1
-                while True:
-                    idx_2 = line[idx_2+1:].find("\"") + idx_2 + 1
-                    if line[idx_2-1] != "\\":
-                        break
-                block1 = line[:idx_1]
-                block2 = line[idx_1+1:idx_2]
-                block3 = line[idx_2+1:].split("\"")
+                if (user_agent := result.group('user_agent')):
+                    obj['user_agent'] = user_agent
 
-                # block2
-                if block2 != "-":
-                    # block2 = block2.split()                       # uri 내부에 space 있는 경우 파싱 오류로 인해 변경
-                    # obj["method"] = block2[0]
-                    # obj["uri"] = block2[1]
-                    
-                    idx = block2.index(" ")
-                    obj["method"] = block2[:idx]
-                    obj["uri"] = block2[idx+1:]
 
-                    # filter xss & sql_injection & rfi
-                    if dt.is_xss(obj["method"], obj["uri"]):
-                        with open("xss.log", 'a') as f:
-                            f.write(f"{filename}::{line}")
-                        continue
-                    elif dt.is_sql_injection(obj["method"], obj["uri"]):
-                        with open("sql_injection.log", 'a') as f:
-                            f.write(f"{filename}::{line}")
-                        continue
-                    elif dt.is_rfi(obj["method"], obj["uri"]):
-                        with open("rfi.log", 'a') as f:
-                            f.write(f"{filename}::{line}")
-                        continue
-                    elif dt.is_wshell(obj["uri"]):
-                        with open("wshell.log", 'a') as f:
-                            f.write(f"{filename}::{line}")
-                        continue
+                obj['mal_code'] = None
+                mal_code = get_malcode(obj)
 
-                    obj["protocol"] = block2[2]
+                # abnormal
+                if mal_code != -1:
+                    obj['mal_code'] = mal_code
 
-                # block3 : 0
-                res_code, res_data_size = block3[0].split()
-                if res_code.isdecimal():
-                    obj["res_code"] = res_code
-
-                # filter webshell
-                if res_data_size.isdecimal():
-                    res_data_size = int(res_data_size)
-                    obj["res_data_size"] = res_data_size
-
-                
-                # block1
-                block1 = block1.replace('[', ',').replace(']', ',')
-                block1 = block1.split(",")
-                obj["timestamp"] = convert_timezone(block1[1])
-
-                block1 = block1[0].split()
-                obj["ip"] = block1[0][2:]
-
-                for element in block1[1:]:
-                    if element != "-":
-                        obj["userid"] = element
-
-                # block3 : 1
-                if len(block3) > 1 and block3[1] != "-":
-                    referer = block3[1]
-                    obj["referer"] = referer
-
-                # block3 : 2
-                if len(block3) > 3 and block3[3] != "-":
-                    user_agent = block3[3]
-                    obj["user_agent"] = user_agent
+                # send obj to db
 
             except Exception as e:
-                with open("unknown.log", 'a') as f:
-                    f.write(f"{e}::{line}")
+                # send obj to unknown
+                pass
 
 
 # parse ssl_request_log format
@@ -121,71 +81,27 @@ def parse_ssl(root, filename):
 
         for line in f.readlines():
             try:
+                line.replace('"', '\"')
+                result = sp.match(line)
+
                 obj = {}
+                obj['ip'] = result.group('ip')
+                obj['timestamp'] = convert_timezone(result.group('date'), result.group('timezone'))
 
-                """
-                block1 : ip + timestamp
-                block2 : method + uri + protocol
-                block3 :  res_data_size
-                """
+                obj['method'] = result.group('method')
+                obj['uri'] = result.group('uri')
+                obj['protocol'] = result.group('protocol')
+                obj['res_data_size'] = result.group('res_data_size')
 
-                # block1, block2, block3 = line.split("\"")         # block2에 \" 포함되어서 생기는 파싱 오류로 인해 변경
-                idx_1 = line.find("\"")
-                idx_2 = idx_1
-                while True:
-                    idx_2 = line[idx_2+1:].find("\"") + idx_2 + 1
-                    if line[idx_2-1] != "\\":
-                        break
-                block1 = line[:idx_1]
-                block2 = line[idx_1+1:idx_2]
-                block3 = line[idx_2+1:]
+                obj['mal_code'] = None
+                mal_code = get_malcode(obj)
 
+                # abnormal
+                if mal_code != -1:
+                    obj['mal_code'] = mal_code
 
-                # block2
-                if block2 != "-":
-                    # block2 = block2.split()                       # uri 내부에 space 있는 경우 파싱 오류로 인해 변경
-                    # obj["method"] = block2[0]
-                    # obj["uri"] = block2[1]
-                    
-                    idx = block2.index(" ")
-                    obj["method"] = block2[:idx]
-                    obj["uri"] = block2[idx+1:]
-
-                    # filter xss & sql_injection & rfi
-                    if dt.is_xss(obj["method"], obj["uri"]):
-                        with open("xss.log", 'a') as f:
-                            f.write(f"{filename}::{line}")
-                        continue
-                    elif dt.is_sql_injection(obj["method"], obj["uri"]):
-                        with open("sql_injection.log", 'a') as f:
-                            f.write(f"{filename}::{line}")
-                        continue
-                    elif dt.is_rfi(obj["method"], obj["uri"]):
-                        with open("rfi.log", 'a') as f:
-                            f.write(f"{filename}::{line}")
-                        continue
-                    elif dt.is_wshell(obj["uri"]):
-                        with open("wshell.log", 'a') as f:
-                            f.write(f"{filename}::{line}")
-                        continue
-
-                    obj["protocol"] = block2[2]
-                
-                # block3
-                # filter webshell
-                res_data_size = block3.replace("\n", "").replace(" ", "")
-                if res_data_size.isdecimal():
-                    res_data_size = int(res_data_size)
-                    obj["res_data_size"] = res_data_size
-
-                # block1
-                block1 = block1.replace('[', ',').replace(']', ',')
-                block1 = block1.split(",")
-                obj["timestamp"] = convert_timezone(block1[1])
-
-                block1 = block1[2].split()
-                obj["ip"] = block1[0][2:]
+                # send obj to db
 
             except Exception as e:
-                with open("unknown.log", 'a') as f:
-                    f.write(f"{e}::{line}")
+                # send obj to unknown
+                pass

@@ -1,9 +1,10 @@
+from set_kisa import TEST_RESULT_DIR
 import datetime
 import detector as dt
 import re
 
-normal_exp = r"(?P<ip>.*) (?P<remote_log_name>.*?)(%s|%s.*?%s)?(?P<userid>.*?) \[(?P<date>.*?)(?= ) (?P<timezone>.*?)\] \"(?P<request>(?P<method>[A-Z]+) (?P<uri>.*)? (?P<protocol>HTTP/[0-9.]+)?|-)\" (?P<status_code>\d{3})? (?P<res_data_size>\d*|-)?( (\"(?P<referer>.*?)\") (\"(?P<user_agent>.*?)\"))?"
-ssl_exp = r"\[(?P<date>.*?)(?= ) (?P<timezone>.*?)\] (?P<ip>.*) (.*?) (.*?) \"(?P<request>(?P<method>[A-Z]+) (?P<uri>.*)? (?P<protocol>HTTP/[0-9.]+)?|-)\" (?P<res_data_size>\d*|-)?"
+normal_exp = r"(?P<ip>.*) (?P<remote_log_name>.*?)(%s|%s.*?%s)?(?P<userid>.*?) \[(?P<date>.*?)(?= ) (?P<timezone>.*?)\] \"(?P<request>(?P<method>[A-Z]+) (?P<uri>.*)? (?P<protocol>HTTPS?/[0-9.]+)?|-)\" (?P<status_code>\d{3})? (?P<res_data_size>\d*|-)?( (\"(?P<referer>.*?)\") (\"(?P<user_agent>.*?)\"))?"
+ssl_exp = r"\[(?P<date>.*?)(?= ) (?P<timezone>.*?)\] (?P<ip>.*) (.*?) (.*?) \"(?P<request>(?P<method>[A-Z]+) (?P<uri>.*)? (?P<protocol>HTTPS?/[0-9.]+)?|-)\" (?P<res_data_size>\d*|-)?"
 
 np = re.compile(normal_exp)
 sp = re.compile(ssl_exp)
@@ -20,25 +21,27 @@ def convert_timezone(date, timezone):
 
     return result.strftime('%Y-%m-%d %H:%M:%S')
 
+
 # filter xss & sql_injection & rfi
-def is_anomal(filename, line, obj):
+def is_mal(filename, line, obj):
     if dt.is_xss(obj["method"], obj["uri"]):
-        with open("xss.log", 'a') as f:
+        with open(f"{TEST_RESULT_DIR}/xss.log", 'a') as f:
             f.write(f"{filename}::{line}")
         return True
     elif dt.is_sql_injection(obj["method"], obj["uri"]):
-        with open("sql_injection.log", 'a') as f:
+        with open(f"{TEST_RESULT_DIR}/sql_injection.log", 'a') as f:
             f.write(f"{filename}::{line}")
         return True
     elif dt.is_rfi(obj["method"], obj["uri"]):
-        with open("rfi.log", 'a') as f:
+        with open(f"{TEST_RESULT_DIR}/rfi.log", 'a') as f:
             f.write(f"{filename}::{line}")
         return True
     elif dt.is_wshell(obj["uri"]):
-        with open("wshell.log", 'a') as f:
+        with open(f"{TEST_RESULT_DIR}/wshell.log", 'a') as f:
             f.write(f"{filename}::{line}")
         return True
     return False
+
 
 # parse normal format
 def parse_normal(root, filename):
@@ -68,12 +71,12 @@ def parse_normal(root, filename):
                     obj['user_agent'] = user_agent
 
                 
-                if is_anomal(filename, line, obj):
+                if is_mal(filename, line, obj):
                     # DB insert to ~~~
                     pass
             
             except Exception as e:
-                with open("unknown.log", 'a') as f:
+                with open(f"{TEST_RESULT_DIR}/unknown.log", 'a') as f:
                     f.write(f"{e}::{line}")
 
 
@@ -97,10 +100,10 @@ def parse_ssl(root, filename):
                 obj['protocol'] = result.group('protocol')
                 obj['res_data_size'] = result.group('res_data_size')
 
-                if is_anomal(filename, line, obj):
+                if is_mal(filename, line, obj):
                     # DB insert to ~~~
                     pass
 
             except Exception as e:
-                with open("unknown.log", 'a') as f:
+                with open(f"{TEST_RESULT_DIR}/unknown.log", 'a') as f:
                     f.write(f"{e}::{line}")
