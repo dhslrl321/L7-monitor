@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping(value = "/api/traffics", produces = "application/json")
@@ -21,6 +22,6 @@ public class TrafficController {
 
     @GetMapping("/{period}")
     public ResponseEntity<List<TotalTrafficResponse>> getTotalTrafficByPeriod(@PathVariable String period) {
-        return ResponseEntity.ok(trafficService.getTrafficCountByPeriod(PeriodType.valueOf(period)));
+        return ResponseEntity.ok(trafficService.getTrafficCountByPeriod(PeriodType.valueOf(period.toUpperCase(Locale.ROOT))));
     }
 }
