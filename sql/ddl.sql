@@ -41,6 +41,13 @@ CREATE TABLE `bob_l7`.`abnormal` (
   CONSTRAINT `fk_mal_code` FOREIGN KEY (`mal_code`) REFERENCES `mal_code` (`code`) ON DELETE SET NULL ON UPDATE CASCADE
 )
 
+CREATE TABLE `bob_l7`.`unknown` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `ip` VARCHAR(10) NOT NULL,
+  `data` TEXT NULL,
+  PRIMARY KEY (`id`));
+  
+
 INSERT INTO `bob_l7`.`mal_code` (`code`, `mal_name`) VALUES (1, "sql injection")
 INSERT INTO `bob_l7`.`mal_code` (`code`, `mal_name`) VALUES (2, "rfi")
 INSERT INTO `bob_l7`.`mal_code` (`code`, `mal_name`) VALUES (3, "webshell")
