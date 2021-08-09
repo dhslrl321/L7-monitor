@@ -7,7 +7,7 @@ CREATE TABLE `bob_l7`.`mal_code` (
 )
 
 CREATE TABLE `bob_l7`.`total` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `ip` varchar(10) NOT NULL,
   `userid` varchar(10) DEFAULT NULL,
   `timestamp` datetime DEFAULT NULL,
