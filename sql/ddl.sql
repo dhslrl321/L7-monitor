@@ -41,6 +41,12 @@ CREATE TABLE `bob_l7`.`abnormal` (
   CONSTRAINT `fk_mal_code` FOREIGN KEY (`mal_code`) REFERENCES `mal_code` (`code`) ON DELETE SET NULL ON UPDATE CASCADE
 )
 
+INSERT INTO `bob_l7`.`mal_code` (`code`, `mal_name`) VALUES (1, "sql injection")
+INSERT INTO `bob_l7`.`mal_code` (`code`, `mal_name`) VALUES (2, "rfi")
+INSERT INTO `bob_l7`.`mal_code` (`code`, `mal_name`) VALUES (3, "webshell")
+INSERT INTO `bob_l7`.`mal_code` (`code`, `mal_name`) VALUES (4, "xss")
+
+
 
 # IP0319288 - - [25/Aug/2017:09:18:27 +0900] "GET /images/pharming_img.png HTTP/1.1" 200 53529 "http://211.233.33.1/" "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko"
 INSERT INTO total SET 
