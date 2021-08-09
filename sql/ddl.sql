@@ -1,17 +1,46 @@
 CREATE DATABASE bob_l7;
+
+CREATE TABLE `bob_l7`.`mal_code` (
+  `code` int(11) NOT NULL AUTO_INCREMENT,
+  `mal_name` varchar(100) NOT NULL,
+  PRIMARY KEY (`code`)
+)
+
 CREATE TABLE `bob_l7`.`total` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `ip` VARCHAR(10) NOT NULL,
-  `userid` VARCHAR(10) NULL,
-  `timestamp` DATETIME NULL,
-  `method` VARCHAR(10) NULL,
-  `uri` TEXT NULL,
-  `res_code` INT,
-  `res_data_size` INT NULL,
-  `referer` TEXT NULL,
-  `user_agent` TEXT NULL,
-  `protocol` VARCHAR(20) NULL,
-  PRIMARY KEY (`id`));
+  `id` int(11) NOT NULL,
+  `ip` varchar(10) NOT NULL,
+  `userid` varchar(10) DEFAULT NULL,
+  `timestamp` datetime DEFAULT NULL,
+  `method` varchar(10) DEFAULT NULL,
+  `uri` text DEFAULT NULL,
+  `protocol` varchar(20) DEFAULT NULL,
+  `res_code` int(11) DEFAULT NULL,
+  `res_data_size` int(11) DEFAULT NULL,
+  `referer` text DEFAULT NULL,
+  `user_agent` text DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
+
+
+CREATE TABLE `bob_l7`.`abnormal` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `mal_code` int(11) DEFAULT NULL,
+  `ip` varchar(10) NOT NULL,
+  `userid` varchar(10) DEFAULT NULL,
+  `timestamp` datetime DEFAULT NULL,
+  `method` varchar(10) DEFAULT NULL,
+  `uri` text DEFAULT NULL,
+  `res_code` int(11) DEFAULT NULL,
+  `res_data_size` int(11) DEFAULT NULL,
+  `referer` text DEFAULT NULL,
+  `user_agent` text DEFAULT NULL,
+  `protocol` varchar(20) DEFAULT NULL,
+  `abnormalcol` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_mal_code_idx` (`mal_code`),
+  CONSTRAINT `fk_mal_code` FOREIGN KEY (`mal_code`) REFERENCES `mal_code` (`code`) ON DELETE SET NULL ON UPDATE CASCADE
+)
+
 
 # IP0319288 - - [25/Aug/2017:09:18:27 +0900] "GET /images/pharming_img.png HTTP/1.1" 200 53529 "http://211.233.33.1/" "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko"
 INSERT INTO total SET 
