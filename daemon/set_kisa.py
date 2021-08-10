@@ -14,15 +14,15 @@ TEST_RESULT_DIR = "test/"
 connection = None
 
 try:
-    connection = connect()
-    cursor = connection.cursor()
+    db = connect()
+    cursor = db.cursor()
 except:
-    if connection:
-        connection.rollback()
+    if db:
+        db.rollback()
         raise Exception("Error: Fail to connect db")
 finally:
-    if connection:
-        connection.close()
+    if db:
+        db.close()
 
 
 def work(root, filename):
@@ -33,6 +33,7 @@ def work(root, filename):
 
     table_name = resolve_table_name(data)
     insert(cursor, table_name, data)
+    db.commit()
 
 
 def main():
