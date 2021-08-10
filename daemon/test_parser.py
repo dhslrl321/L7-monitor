@@ -42,7 +42,6 @@ def is_mal(filename, line, obj):
         return True
     return False
 
-
 # parse normal format
 def parse_normal(root, filename):
     path = root+"/"+filename
