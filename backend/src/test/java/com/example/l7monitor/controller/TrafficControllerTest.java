@@ -1,8 +1,8 @@
 package com.example.l7monitor.controller;
 
 import com.example.l7monitor.domain.dto.TotalTrafficResponse;
-import com.example.l7monitor.domain.type.PeriodType;
-import com.example.l7monitor.domain.type.TrafficType;
+import com.example.l7monitor.domain.types.PeriodType;
+import com.example.l7monitor.domain.types.TrafficType;
 import com.example.l7monitor.service.TrafficService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -1,13 +1,11 @@
 package com.example.l7monitor.service;
 
+import com.example.l7monitor.domain.dto.SecurityLevelResponse;
 import com.example.l7monitor.domain.dto.TotalTrafficResponse;
-import com.example.l7monitor.domain.entity.Abnormal;
-import com.example.l7monitor.domain.entity.Normal;
 import com.example.l7monitor.domain.repository.AbnormalRepository;
-import com.example.l7monitor.domain.repository.NormalRepository;
-import com.example.l7monitor.domain.type.PeriodType;
-import com.example.l7monitor.domain.type.TrafficType;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.l7monitor.domain.repository.TotalRepository;
+import com.example.l7monitor.domain.types.PeriodType;
+import com.example.l7monitor.domain.types.TrafficType;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,17 +14,16 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 @Service
 @Transactional
 public class TrafficService {
 
-    private NormalRepository normalRepository;
+    private TotalRepository totalRepository;
     private AbnormalRepository abnormalRepository;
 
-    public TrafficService(NormalRepository normalRepository, AbnormalRepository abnormalRepository) {
-        this.normalRepository = normalRepository;
+    public TrafficService(TotalRepository totalRepository, AbnormalRepository abnormalRepository) {
+        this.totalRepository = totalRepository;
         this.abnormalRepository = abnormalRepository;
     }
 
@@ -46,7 +43,7 @@ public class TrafficService {
         List<TotalTrafficResponse> response = new ArrayList<>();
 
         for (long i = 1; i <= 8; i++) {
-            long count = normalRepository.countByTimestampBetween(from, to);
+            long count = totalRepository.countByTimestampBetween(from, to);
 
             response.add(TotalTrafficResponse.builder()
                     .id(i)
@@ -68,12 +65,12 @@ public class TrafficService {
      * @return 현재 시간으로부터 -24 시간의 모든 비정상 로그의 개수를 반환한다.
      */
     public TotalTrafficResponse getTodayTrafficSummaries(TrafficType trafficType) {
-        LocalDateTime from = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.now());
+        LocalDateTime from = LocalDateTime.now().minusDays(1L);
 
         long count = 0;
 
         if(trafficType.equals(TrafficType.ALL)) {
-            count = normalRepository.countByTimestampBetween(from, LocalDateTime.now());
+            count = totalRepository.countByTimestampBetween(from, LocalDateTime.now());
         } else if (trafficType.equals(TrafficType.THREAT)) {
             count = abnormalRepository.countByTimestampBetween(from, LocalDateTime.now());
         }
@@ -83,6 +80,18 @@ public class TrafficService {
                 .count(count)
                 .timestamp(from)
                 .build();
+    }
+
+    /**
+     * 오늘의 보안 레벨을 계산하여 반환한다.
+     *
+     * @return
+     */
+    public SecurityLevelResponse getTodaySecurityLevel() {
+
+        LocalDateTime from = LocalDateTime.now().minusDays(1L);
+
+        totalRepository.count()
     }
 
     private static LocalDateTime minusTimeByType(PeriodType periodType, LocalDateTime time) {

@@ -1,10 +1,11 @@
 package com.example.l7monitor.service;
 
+import com.example.l7monitor.domain.dto.SecurityLevelResponse;
 import com.example.l7monitor.domain.dto.TotalTrafficResponse;
 import com.example.l7monitor.domain.repository.AbnormalRepository;
-import com.example.l7monitor.domain.repository.NormalRepository;
-import com.example.l7monitor.domain.type.PeriodType;
-import com.example.l7monitor.domain.type.TrafficType;
+import com.example.l7monitor.domain.repository.TotalRepository;
+import com.example.l7monitor.domain.types.PeriodType;
+import com.example.l7monitor.domain.types.TrafficType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,15 +26,15 @@ class TrafficServiceTest {
 
     private TrafficService trafficService;
 
-    private final NormalRepository normalRepository = mock(NormalRepository.class);
+    private final TotalRepository totalRepository = mock(TotalRepository.class);
     private final AbnormalRepository abnormalRepository = mock(AbnormalRepository.class);
 
     @BeforeEach
     void init() {
 
-        trafficService = new TrafficService(normalRepository, abnormalRepository);
+        trafficService = new TrafficService(totalRepository, abnormalRepository);
 
-        given(normalRepository.countByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class)))
+        given(totalRepository.countByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class)))
                 .willReturn(5L);
         
         given(abnormalRepository.countByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class)))
@@ -79,6 +80,17 @@ class TrafficServiceTest {
                 () -> assertEquals(1, response.getId()),
                 () -> assertEquals(count, response.getCount()),
                 () -> assertNotNull(response.getTimestamp())
+        );
+    }
+
+    @Test
+    @DisplayName("오늘 하루의 보안 레벨 - 성공")
+    void getTodaySecurityLevel() {
+        SecurityLevelResponse response = trafficService.getTodaySecurityLevel();
+
+        assertAll(
+                () -> assertEquals(3, response.getLevel()),
+                () -> assertEquals("관심 단계", response.getLevel())
         );
     }
 
