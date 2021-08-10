@@ -5,6 +5,7 @@ import com.example.l7monitor.domain.dto.TotalTrafficResponse;
 import com.example.l7monitor.domain.repository.AbnormalRepository;
 import com.example.l7monitor.domain.repository.TotalRepository;
 import com.example.l7monitor.domain.types.PeriodType;
+import com.example.l7monitor.domain.types.SecurityLevelType;
 import com.example.l7monitor.domain.types.TrafficType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,10 +36,10 @@ class TrafficServiceTest {
         trafficService = new TrafficService(totalRepository, abnormalRepository);
 
         given(totalRepository.countByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class)))
-                .willReturn(5L);
+                .willReturn(12327L);
         
         given(abnormalRepository.countByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class)))
-                .willReturn(7L);
+                .willReturn(417L);
     }
 
     @ParameterizedTest
@@ -53,7 +54,7 @@ class TrafficServiceTest {
         assertAll(
                 () -> assertEquals(8, response.size()),
                 () -> assertEquals(1, firstTotalResponseData.getId()),
-                () -> assertEquals(5, firstTotalResponseData.getCount()),
+                () -> assertEquals(12327L, firstTotalResponseData.getCount()),
                 () -> assertNotNull(firstTotalResponseData.getTimestamp())
         );
     }
@@ -74,7 +75,7 @@ class TrafficServiceTest {
         TotalTrafficResponse response = trafficService
                 .getTodayTrafficSummaries(trafficType);
 
-        long count = trafficType.equals(TrafficType.ALL) ? 5 : 7;
+        long count = trafficType.equals(TrafficType.ALL) ? 12327L : 417L;
 
         assertAll(
                 () -> assertEquals(1, response.getId()),
@@ -89,9 +90,24 @@ class TrafficServiceTest {
         SecurityLevelResponse response = trafficService.getTodaySecurityLevel();
 
         assertAll(
-                () -> assertEquals(3, response.getLevel()),
-                () -> assertEquals("관심 단계", response.getLevel())
+                () -> assertEquals(SecurityLevelType.LEVEL3.getLevel(), response.getLevel()),
+                () -> assertEquals(SecurityLevelType.LEVEL3.getDescription(), response.getDescription()),
+                () -> assertEquals("0.03383%", response.getRatio())
         );
+    }
+
+    @Test
+    @DisplayName("계산")
+    void a() {
+
+        long a = 12327;
+        long b = 417;
+
+        Double result = (double) b / (double) a;
+
+        String ratio = String.format("%.5f", result);
+
+        System.out.println(ratio);
     }
 
     private static Stream<Arguments> paramsForGetTodayTrafficSummariesValid() {

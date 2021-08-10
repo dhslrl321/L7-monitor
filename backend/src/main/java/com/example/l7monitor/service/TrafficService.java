@@ -5,6 +5,7 @@ import com.example.l7monitor.domain.dto.TotalTrafficResponse;
 import com.example.l7monitor.domain.repository.AbnormalRepository;
 import com.example.l7monitor.domain.repository.TotalRepository;
 import com.example.l7monitor.domain.types.PeriodType;
+import com.example.l7monitor.domain.types.SecurityLevelType;
 import com.example.l7monitor.domain.types.TrafficType;
 import org.springframework.stereotype.Service;
 
@@ -84,14 +85,38 @@ public class TrafficService {
 
     /**
      * 오늘의 보안 레벨을 계산하여 반환한다.
-     *
+     * 계산식 : (비정상 요청 / 일반 요청)
      * @return
      */
     public SecurityLevelResponse getTodaySecurityLevel() {
 
         LocalDateTime from = LocalDateTime.now().minusDays(1L);
 
-        totalRepository.count()
+        long normalCount = totalRepository.countByTimestampBetween(from, LocalDateTime.now());
+        long abnormalCount = abnormalRepository.countByTimestampBetween(from, LocalDateTime.now());
+
+        SecurityLevelType level = null;
+
+        double ratio = (double) abnormalCount / (double) normalCount;
+
+        if(ratio <= 0.001) {
+            level = SecurityLevelType.LEVEL1;
+        } else if(0.001 < ratio && ratio <= 0.01) {
+            level = SecurityLevelType.LEVEL2;
+        } else if(0.01 < ratio && ratio <= 0.1) {
+            level = SecurityLevelType.LEVEL3;
+        } else if(0.1 < ratio) {
+            level = SecurityLevelType.LEVEL4;
+        }
+
+        SecurityLevelResponse response = SecurityLevelResponse.builder()
+                .level(level.getLevel())
+                .description(level.getDescription())
+                .build();
+
+        response.changeRatioParsedString(ratio);
+
+        return response;
     }
 
     private static LocalDateTime minusTimeByType(PeriodType periodType, LocalDateTime time) {
