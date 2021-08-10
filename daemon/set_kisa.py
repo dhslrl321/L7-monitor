@@ -2,7 +2,7 @@ import os
 import sys
 import log_parser as lp
 import test_parser as tp
-from db_connector import connect
+from db_controller import *
 
 ## *ROOT_DIR는 개인별 websvr_attack 폴더 저장되어있는 디렉토리로 설정 요망
 ROOT_DIR = "C:/Users/jenny/projects/"
@@ -24,11 +24,16 @@ finally:
     if connection:
         connection.close()
 
+
 def work(root, filename):
     if "ssl_request_log" in filename:
-        lp.parse_ssl(root, filename)
+        data = lp.parse_ssl(root, filename)
     else:
-        lp.parse_normal(root, filename)
+        data = lp.parse_normal(root, filename)
+
+    table_name = resolve_table_name(data)
+    insert(cursor, table_name, data)
+
 
 def main():
     try:
