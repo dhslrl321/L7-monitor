@@ -1,6 +1,7 @@
 package com.example.l7monitor.service;
 
 import com.example.l7monitor.domain.dto.SecurityLevelResponse;
+import com.example.l7monitor.domain.dto.TotalSummariesResponse;
 import com.example.l7monitor.domain.dto.TotalTrafficResponse;
 import com.example.l7monitor.domain.repository.AbnormalRepository;
 import com.example.l7monitor.domain.repository.TotalRepository;
@@ -117,6 +118,37 @@ public class TrafficService {
         response.changeRatioParsedString(ratio);
 
         return response;
+    }
+
+    /**
+     * 오늘의 트래픽 요약을 한 번에 반환한다.
+     * @return 오늘의 트래픽 요약
+     */
+    public TotalSummariesResponse getTodaySummaries() {
+        LocalDateTime now = LocalDateTime.now();
+
+        long allTraffic = totalRepository.countByTimestampBetween(now.minusDays(1L), now);
+
+        long abnormalTraffic = abnormalRepository.countByTimestampBetween(now.minusDays(1L), now);
+
+        TotalTrafficResponse totalTrafficResponse = TotalTrafficResponse.builder()
+                .id(1L)
+                .count(allTraffic)
+                .timestamp(now.minusDays(1L))
+                .build();
+
+        TotalTrafficResponse abnormalTrafficResponse = TotalTrafficResponse.builder()
+                .id(1L)
+                .count(abnormalTraffic)
+                .timestamp(now.minusDays(1L))
+                .build();
+
+
+        return TotalSummariesResponse.builder()
+                .totalTraffic(totalTrafficResponse)
+                .abnormalTraffic(abnormalTrafficResponse)
+                .securityLevel(getTodaySecurityLevel())
+                .build();
     }
 
     private static LocalDateTime minusTimeByType(PeriodType periodType, LocalDateTime time) {

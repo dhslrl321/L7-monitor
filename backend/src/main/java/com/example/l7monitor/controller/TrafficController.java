@@ -1,5 +1,6 @@
 package com.example.l7monitor.controller;
 
+import com.example.l7monitor.domain.dto.TotalSummariesResponse;
 import com.example.l7monitor.domain.dto.TotalTrafficResponse;
 import com.example.l7monitor.domain.types.PeriodType;
 import com.example.l7monitor.domain.types.TrafficType;
@@ -26,8 +27,17 @@ public class TrafficController {
                 trafficService.getTrafficCountByPeriod(PeriodType.valueOf(period.toUpperCase(Locale.ROOT))));
     }
 
+    @GetMapping("/summaries")
+    public ResponseEntity<TotalSummariesResponse> getTodayTrafficsSummaries() {
+        return ResponseEntity.ok().body(trafficService.getTodaySummaries());
+    }
+
     @GetMapping("/summaries/{type}")
-    public ResponseEntity<TotalTrafficResponse> getTodayTrafficsSummaries(@PathVariable String type) {
+    public ResponseEntity getTodayTrafficsSummariesBy(@PathVariable String type) {
+        if(type.equals(TrafficType.LEVEL.toString())) {
+            return ResponseEntity.ok().body(trafficService.getTodaySecurityLevel());
+        }
+
         return ResponseEntity.ok().body(
                 trafficService.getTodayTrafficSummaries(
                         TrafficType.valueOf(type.toUpperCase(Locale.ROOT))));

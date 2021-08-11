@@ -1,6 +1,7 @@
 package com.example.l7monitor.service;
 
 import com.example.l7monitor.domain.dto.SecurityLevelResponse;
+import com.example.l7monitor.domain.dto.TotalSummariesResponse;
 import com.example.l7monitor.domain.dto.TotalTrafficResponse;
 import com.example.l7monitor.domain.repository.AbnormalRepository;
 import com.example.l7monitor.domain.repository.TotalRepository;
@@ -97,17 +98,15 @@ class TrafficServiceTest {
     }
 
     @Test
-    @DisplayName("계산")
-    void a() {
+    @DisplayName("오늘의 트랙픽 요약을 모두 반환한다 -성공")
+    void getTodayTrafficsSummaries() {
+        TotalSummariesResponse response = trafficService.getTodaySummaries();
 
-        long a = 12327;
-        long b = 417;
-
-        Double result = (double) b / (double) a;
-
-        String ratio = String.format("%.5f", result);
-
-        System.out.println(ratio);
+        assertAll(
+                () -> assertNotNull(response.getTotalTraffic()),
+                () -> assertNotNull(response.getAbnormalTraffic()),
+                () -> assertNotNull(response.getSecurityLevel())
+        );
     }
 
     private static Stream<Arguments> paramsForGetTodayTrafficSummariesValid() {

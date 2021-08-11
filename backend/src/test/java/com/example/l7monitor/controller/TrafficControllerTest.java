@@ -1,7 +1,10 @@
 package com.example.l7monitor.controller;
 
+import com.example.l7monitor.domain.dto.SecurityLevelResponse;
+import com.example.l7monitor.domain.dto.TotalSummariesResponse;
 import com.example.l7monitor.domain.dto.TotalTrafficResponse;
 import com.example.l7monitor.domain.types.PeriodType;
+import com.example.l7monitor.domain.types.SecurityLevelType;
 import com.example.l7monitor.domain.types.TrafficType;
 import com.example.l7monitor.service.TrafficService;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,6 +57,18 @@ class TrafficControllerTest {
                 .count(821L)
                 .build();
 
+        SecurityLevelResponse securityLevelResponse = SecurityLevelResponse.builder()
+                .level(SecurityLevelType.LEVEL3.getLevel())
+                .description(SecurityLevelType.LEVEL3.getDescription())
+                .ratio("0.0412%")
+                .build();
+
+        TotalSummariesResponse totalSummariesResponse = TotalSummariesResponse.builder()
+                .totalTraffic(todayAllTraffic)
+                .abnormalTraffic(todayThreatTraffic)
+                .securityLevel(securityLevelResponse)
+                .build();
+
         given(trafficService.getTrafficCountByPeriod(PeriodType.WEEK))
                 .willReturn(WEEK);
 
@@ -68,6 +83,10 @@ class TrafficControllerTest {
 
         given(trafficService.getTodayTrafficSummaries(TrafficType.THREAT))
                 .willReturn(todayThreatTraffic);
+
+        given(trafficService.getTodaySecurityLevel()).willReturn(securityLevelResponse);
+
+        given(trafficService.getTodaySummaries()).willReturn(totalSummariesResponse);
     }
 
     @Test
@@ -121,6 +140,28 @@ class TrafficControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").exists())
                 .andExpect(jsonPath("count").exists())
+        ;
+    }
+
+    @Test
+    @DisplayName("오늘의 보안 레벨 요청")
+    void getTodaySecurityLevel() throws Exception {
+        mockMvc.perform(get("/api/traffics/summaries/{type}", TrafficType.LEVEL.toString())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("오늘의 모든 트래픽 요약")
+    void getTodayTrafficSummaries() throws Exception {
+        mockMvc.perform(get("/api/traffics/summaries")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("totalTraffic").exists())
+                .andExpect(jsonPath("abnormalTraffic").exists())
+                .andExpect(jsonPath("securityLevel").exists())
         ;
     }
 

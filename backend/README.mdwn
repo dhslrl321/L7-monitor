@@ -7,6 +7,7 @@
 
 - 총 4개의 칼럼
   - **오늘의 트래픽 요약 Column**
+    - 요약 전체 보기 : `/api/traffics/summaries/` **GET**
     - 모든 트래픽 수 : `/api/traffics/summaries/all` **GET**
     - 공격 트래픽 수 : `/api/traffics/summaries/threat` **GET**
     - 오늘의 보안 레벨 : `/api/traffics/summaries/level` **GET**
@@ -26,6 +27,7 @@
 ## API
 
 - `/api/traffics/{period}`
+- `/api/traffics/summaries`
 - `/api/traffics/summaries/{type}`
 - `/api/logs`
 - `/api/threats/{type}`
@@ -57,7 +59,8 @@
     - [x] TrafficController 구현 및 테스트 코드 작성
     - [x] 테스트 커버리지 90% 이상 달성
   - 오늘의 트래픽 요약 Column
-    - [ ] Abnormal 테이블 구성
-    - [ ] 공격 트래픽 수 작성
-    - [ ] 오늘의 보안 레벨
-
+    - [x] Abnormal 테이블 구성
+    - [x] 공격 트래픽 수 작성
+    - [x] 오늘의 보안 레벨
+    - [x] summaries 를 전체로 반환하는 endpoint 구성
+  - 트래픽 요약
