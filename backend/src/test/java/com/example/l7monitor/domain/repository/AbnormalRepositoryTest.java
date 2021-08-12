@@ -62,6 +62,19 @@ class AbnormalRepositoryTest {
         assertEquals(4, count);
     }
 
+    @Test
+    @DisplayName("최근 14 일간 공격 트래픽 개수 확인하기 - 성공")
+    void countByMalCode_TimestampBetween() {
+        long count = abnormalRepository.countByMalCodeCodeAndTimestampBetween(
+                1, LocalDateTime.now().minusDays(14L), LocalDateTime.now());
+
+        assertEquals(20, count);
+    }
+
+    private static void countAllByTimestampBetween() {
+
+    }
+
     private static void generateAbnormalLogData(JpaRepository abnormalRepository, int sequenceNumber) {
 
         if(sequenceNumber >= times.length) {

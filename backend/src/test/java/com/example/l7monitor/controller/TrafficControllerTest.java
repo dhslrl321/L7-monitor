@@ -1,6 +1,7 @@
 package com.example.l7monitor.controller;
 
 import com.example.l7monitor.domain.dto.SecurityLevelResponse;
+import com.example.l7monitor.domain.dto.ThreatLogCountResponse;
 import com.example.l7monitor.domain.dto.TotalSummariesResponse;
 import com.example.l7monitor.domain.dto.TotalTrafficResponse;
 import com.example.l7monitor.domain.types.PeriodType;
@@ -67,6 +68,13 @@ class TrafficControllerTest {
                 .totalTraffic(todayAllTraffic)
                 .abnormalTraffic(todayThreatTraffic)
                 .securityLevel(securityLevelResponse)
+                .build();
+
+        ThreatLogCountResponse threatLogCountResponse = ThreatLogCountResponse.builder()
+                .sqli(todayThreatTraffic)
+                .rfi(todayThreatTraffic)
+                .wshell(todayThreatTraffic)
+                .xss(todayThreatTraffic)
                 .build();
 
         given(trafficService.getTrafficCountByPeriod(PeriodType.WEEK))
