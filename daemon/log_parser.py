@@ -1,11 +1,10 @@
-from set_kisa import TEST_RESULT_DIR
 import datetime
 import detector as dt
 import re
+import db_controller as db
 
-normal_exp = r"(?P<ip>.*) (?P<remote_log_name>.*?)(%s|%s.*?%s)?(?P<userid>.*?) \[(?P<date>.*?)(?= ) (?P<timezone>.*?)\] \"(?P<request>(?P<method>[A-Z]+) (?P<uri>.*)? (?P<protocol>HTTPS?/[0-9.]+)?|-)\" (?P<status_code>\d{3})? (?P<res_data_size>\d*|-)?( (\"(?P<referer>.*?)\") (\"(?P<user_agent>.*?)\"))?"
-ssl_exp = r"\[(?P<date>.*?)(?= ) (?P<timezone>.*?)\] (?P<ip>.*) (.*?) (.*?) \"(?P<request>(?P<method>[A-Z]+) (?P<uri>.*)? (?P<protocol>HTTPS?/[0-9.]+)?|-)\" (?P<res_data_size>\d*|-)?"
-
+normal_exp = r"(?P<ip>\S+) (?P<remote_log_name>\S+) (?P<userid>\S+) (- )?\[(?P<date>.+)(?= ) (?P<timezone>\S+)\] \"(?P<request>(?P<method>[A-Z]+) (?P<uri>\S+) (?P<protocol>HTTPS?/[0-9.]+)?|-)?\" (?P<status_code>\d{3}) (?P<res_data_size>\d+|-)?( (\"(?P<referer>\S+)\") (\"(?P<user_agent>\S+)\"))?"
+ssl_exp = r"\[(?P<date>\S+)(?= ) (?P<timezone>\S+)\] (?P<ip>\S+) (.*?) (.*?) \"(?P<request>(?P<method>[A-Z]+) (?P<uri>\S+) (?P<protocol>HTTPS?/[0-9.]+)?|-)\" (?P<res_data_size>\d{3}|-)?"
 np = re.compile(normal_exp)
 sp = re.compile(ssl_exp)
 
@@ -32,6 +31,8 @@ def init_unknown():
     obj['ip'] = None
     obj['data'] = None
 
+    return obj
+
 # UTC -> Asia/Seoul
 def convert_timezone(date, timezone):
     # ex : 07/Feb/2017:01:13:08 +0900
@@ -46,7 +47,7 @@ def convert_timezone(date, timezone):
 
 
 # filter xss & sql_injection & rfi
-def resolve_malcode(obj):
+def get_malcode(obj):
     if dt.is_xss(obj["method"], obj["uri"]): return 4
     elif dt.is_sql_injection(obj["method"], obj["uri"]): return 1
     elif dt.is_rfi(obj["method"], obj["uri"]): return 2
@@ -55,8 +56,8 @@ def resolve_malcode(obj):
 
 
 # parse normal format
-def parse_normal(root, filename):
-    path = root+"/"+filename
+def parse_normal(conn, cursor, path):
+    obj = {}
 
     with open(path) as f:
         for line in f.readlines():
@@ -79,21 +80,21 @@ def parse_normal(root, filename):
                 obj['referer'] = result.group('referer')
                 obj['user_agent'] = result.group('user_agent')
 
-                obj['mal_code'] = resolve_malcode(obj)
-
-                return obj
+                obj['mal_code'] = get_malcode(obj)
 
             except Exception as e:
                 obj = init_unknown()
                 obj['ip'] = line[:9]
-                obj['data'] = line[9:]
+                obj['data'] = line[9:].replace('"', "\'")
 
-                return obj
+            finally:
+                table_name = db.get_table(obj)
+                db.insert(cursor, table_name, obj)
+                conn.commit()
 
 
 # parse ssl_request_log format
-def parse_ssl(root, filename):
-    path = root + "/" + filename
+def parse_ssl(conn, cursor, path):
 
     with open(path) as f:
 
@@ -112,13 +113,14 @@ def parse_ssl(root, filename):
                 obj['protocol'] = result.group('protocol')
                 obj['res_data_size'] = result.group('res_data_size')
 
-                obj['mal_code'] = resolve_malcode(obj)
-
-                return obj
+                obj['mal_code'] = get_malcode(obj)
 
             except Exception as e:
                 obj = init_unknown()
                 obj['ip'] = line[:9]
-                obj['data'] = line[9:]
+                obj['data'] = line[9:].replace('"', "\'")
 
-                return obj
+            finally:
+                table_name = db.get_table(obj)
+                db.insert(cursor, table_name, obj)
+                conn.commit()

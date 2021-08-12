@@ -1,4 +1,5 @@
 CREATE DATABASE bob_l7;
+USE bob_l7;
 
 CREATE TABLE `bob_l7`.`mal_code` (
   `code` int(11) NOT NULL AUTO_INCREMENT,
@@ -22,7 +23,7 @@ CREATE TABLE `bob_l7`.`total` (
 );
 
 
-CREATE TABLE `abnormal` (
+CREATE TABLE `bob_l7`.`abnormal` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `mal_code` int(11) DEFAULT NULL,
   `ip` varchar(10) NOT NULL,
@@ -38,10 +39,10 @@ CREATE TABLE `abnormal` (
   PRIMARY KEY (`id`),
   KEY `fk_mal_code_idx` (`mal_code`),
   CONSTRAINT `fk_mal_code` FOREIGN KEY (`mal_code`) REFERENCES `mal_code` (`code`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+);
 
 
-CREATE TABLE `bob_l7`.`unknown` (
+CREATE TABLE `bob_l7`.`unknown_log` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `ip` VARCHAR(10) NOT NULL,
   `data` TEXT NULL,

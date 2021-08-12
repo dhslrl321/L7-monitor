@@ -15,17 +15,27 @@ def connect():
 
     return db
 
-def resolve_table_name(data):
-    if data.get('data'): return "unknown"
+def get_table(data):
+    if data.get('data'): return "unknown_log"
     if data['mal_code']: return "abnormal"
     return "total"
     
+def set_attributes(data):
+    keys = []
+    values = []
+    for k,v in data.items():
+        if v and v != "-": 
+            keys.append('`'+k+'`')
+            v = str(v)
+            values.append(v if v.isdecimal() else '\"'+ v +'\"')    
+
+    return ','.join(keys), ','.join(values)
 
 def insert(cursor, table, data):
     try:
-        fs = ','.join(list(map(lambda x: '`' + x + '`', [*data.keys()])))
-        vs = ','.join(list(map(lambda x: '%(' + x + ')s', [*data.keys()])))
+        fs,vs = set_attributes(data)
         sql = "INSERT INTO `%s` (%s) VALUES (%s)" % (table, fs, vs)
-        cursor.execute(sql, data)
-    except:
-        raise Exception("Error : Fail to insert record")
+        cursor.execute(sql)
+    except Exception as e:
+        print(sql, data)
+        raise Exception(f"Insert Error : {e}")
