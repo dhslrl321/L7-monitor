@@ -12,12 +12,13 @@ import java.time.LocalDateTime;
 @Getter @Setter @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Normal {
+public class Total {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String ip;
+    private String userid;
     private LocalDateTime timestamp;
     private String method;
     private String uri;
@@ -26,5 +27,4 @@ public class Normal {
     private Integer resDataSize;
     private String referer;
     private String userAgent;
-
 }

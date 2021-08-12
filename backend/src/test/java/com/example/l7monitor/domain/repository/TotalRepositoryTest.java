@@ -1,13 +1,12 @@
 package com.example.l7monitor.domain.repository;
 
-import com.example.l7monitor.domain.entity.Normal;
+import com.example.l7monitor.domain.entity.Total;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.test.context.event.annotation.BeforeTestMethod;
 
 import javax.transaction.Transactional;
 
@@ -21,9 +20,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Transactional
-class NormalRepositoryTest {
+class TotalRepositoryTest {
     @Autowired
-    private NormalRepository normalRepository;
+    private TotalRepository totalRepository;
 
     private static final LocalDateTime[] times = {
             LocalDateTime.of(LocalDate.now(), LocalTime.now().minusMinutes(4)),
@@ -36,15 +35,15 @@ class NormalRepositoryTest {
 
     @BeforeEach
     void init() {
-        IntStream.range(0, 20).forEach(i -> generateNormalLogData(normalRepository, i));
+        IntStream.range(0, 20).forEach(i -> generateNormalLogData(totalRepository, i));
     }
 
     @Test
     @DisplayName("get 테스트")
     void findAllNormalLog() {
-        List<Normal> normals = normalRepository.findAll();
+        List<Total> totals = totalRepository.findAll();
 
-        assertEquals(20, normals.size());
+        assertEquals(20, totals.size());
     }
 
     @Test
@@ -54,7 +53,7 @@ class NormalRepositoryTest {
         LocalDateTime from = LocalDateTime.of(LocalDate.now(), LocalTime.now().minusMinutes(10)); // 현재 시간 -10 분
         LocalDateTime to = LocalDateTime.of(LocalDate.now(), LocalTime.now().minusMinutes(5)); // 현재 시간 -5 분
 
-        long count = normalRepository.countByTimestampBetween(from, to);
+        long count = totalRepository.countByTimestampBetween(from, to);
 
         assertEquals(3, count);
     }
@@ -67,7 +66,7 @@ class NormalRepositoryTest {
 
         String ip = "192.168.0." + sequenceNumber;
 
-        Normal normal = Normal.builder()
+        Total total = Total.builder()
                 .ip(ip)
                 .timestamp(times[sequenceNumber])
                 .method("GET")
@@ -79,6 +78,6 @@ class NormalRepositoryTest {
                 .userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko")
                 .build();
 
-        normalRepository.save(normal);
+        normalRepository.save(total);
     }
 }

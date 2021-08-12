@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class NormalEntityTest {
+class TotalEntityTest {
 
     @Test
     void create() {
@@ -21,10 +21,12 @@ class NormalEntityTest {
         String referer = "https://google.com";
         String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko";
         LocalDateTime time = LocalDateTime.now();
+        String userid = "-";
 
-        Normal normal = Normal.builder()
+        Total total = Total.builder()
                 .id(id)
                 .ip(ip)
+                .userid(userid)
                 .timestamp(time)
                 .method(method)
                 .uri(uri)
@@ -36,16 +38,17 @@ class NormalEntityTest {
                 .build();
 
         assertAll(
-                () -> assertEquals(id, normal.getId()),
-                () -> assertEquals(ip, normal.getIp()),
-                () -> assertEquals(resCode, normal.getResCode()),
-                () -> assertEquals(uri, normal.getUri()),
-                () -> assertEquals(protocol, normal.getProtocol()),
-                () -> assertEquals(referer, normal.getReferer()),
-                () -> assertEquals(userAgent, normal.getUserAgent()),
-                () -> assertEquals(resDataSize, normal.getResDataSize()),
-                () -> assertEquals(method, normal.getMethod()),
-                () -> assertEquals(time, normal.getTimestamp())
+                () -> assertEquals(id, total.getId()),
+                () -> assertEquals(ip, total.getIp()),
+                () -> assertEquals(userid, total.getUserid()),
+                () -> assertEquals(resCode, total.getResCode()),
+                () -> assertEquals(uri, total.getUri()),
+                () -> assertEquals(protocol, total.getProtocol()),
+                () -> assertEquals(referer, total.getReferer()),
+                () -> assertEquals(userAgent, total.getUserAgent()),
+                () -> assertEquals(resDataSize, total.getResDataSize()),
+                () -> assertEquals(method, total.getMethod()),
+                () -> assertEquals(time, total.getTimestamp())
         );
     }
 }
