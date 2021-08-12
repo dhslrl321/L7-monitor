@@ -146,7 +146,7 @@ class TrafficControllerTest {
     @Test
     @DisplayName("오늘의 보안 레벨 요청")
     void getTodaySecurityLevel() throws Exception {
-        mockMvc.perform(get("/api/traffics/summaries/{type}", TrafficType.LEVEL.toString())
+        mockMvc.perform(get("/api/traffics/summaries/{type}", "level")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());

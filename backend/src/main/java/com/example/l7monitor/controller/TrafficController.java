@@ -34,7 +34,7 @@ public class TrafficController {
 
     @GetMapping("/summaries/{type}")
     public ResponseEntity getTodayTrafficsSummariesBy(@PathVariable String type) {
-        if(type.equals(TrafficType.LEVEL.toString())) {
+        if(type.equals(TrafficType.LEVEL.toString().toLowerCase(Locale.ROOT))) {
             return ResponseEntity.ok().body(trafficService.getTodaySecurityLevel());
         }
 
