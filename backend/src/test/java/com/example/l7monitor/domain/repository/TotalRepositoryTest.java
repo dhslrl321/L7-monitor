@@ -47,7 +47,7 @@ class TotalRepositoryTest {
     }
 
     @Test
-    @DisplayName("특정 시간대에 존재하는 모든 로그 출력 - 성공")
+    @DisplayName("특정 시간대에 존재하는 모든 로그 개수를 출력 - 성공")
     void countByTimestampBetween_success() {
 
         LocalDateTime from = LocalDateTime.of(LocalDate.now(), LocalTime.now().minusMinutes(10)); // 현재 시간 -10 분
@@ -56,6 +56,14 @@ class TotalRepositoryTest {
         long count = totalRepository.countByTimestampBetween(from, to);
 
         assertEquals(3, count);
+    }
+
+    @Test
+    @DisplayName("24 시간 내의 로그를 모두 반환")
+    void findAllByTimestampBetween_success() {
+        List<Total> totalLogs = totalRepository.findAllByTimestampBetween(LocalDateTime.now().minusDays(1L), LocalDateTime.now());
+
+        assertEquals(20, totalLogs.size());
     }
 
     private static void generateNormalLogData(JpaRepository normalRepository, int sequenceNumber) {
