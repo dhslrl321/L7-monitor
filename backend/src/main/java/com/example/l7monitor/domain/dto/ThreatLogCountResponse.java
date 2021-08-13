@@ -6,8 +6,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ThreatLogCountResponse {
-    private TotalTrafficResponse xss;
-    private TotalTrafficResponse wshell;
     private TotalTrafficResponse sqli;
     private TotalTrafficResponse rfi;
+    private TotalTrafficResponse wshell;
+    private TotalTrafficResponse xss;
 }
