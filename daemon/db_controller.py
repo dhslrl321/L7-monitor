@@ -20,20 +20,20 @@ def get_table(data):
     if data['mal_code']: return "abnormal"
     return "total"
     
-def set_attributes(data):
+def set_attributes(conn, data):
     keys = []
     values = []
     for k,v in data.items():
         if v and v != "-": 
             keys.append('`'+k+'`')
-            v = str(v)
+            v = conn.escape_string(str(v))
             values.append(v if v.isdecimal() else '\"'+ v +'\"')    
 
     return ','.join(keys), ','.join(values)
 
-def insert(cursor, table, data):
+def insert(conn, cursor, table, data):
     try:
-        fs,vs = set_attributes(data)
+        fs,vs = set_attributes(conn, data)
         sql = "INSERT INTO `%s` (%s) VALUES (%s)" % (table, fs, vs)
         cursor.execute(sql)
     except Exception as e:
