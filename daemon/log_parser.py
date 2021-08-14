@@ -62,7 +62,7 @@ def parse_normal(conn, cursor, path):
     with open(path) as f:
         for line in f.readlines():
             try:
-                line.replace('"', '\"')
+                line = line.replace('"', '\"').replace("\\", "-")
                 result = np.match(line)
 
                 obj = init_obj()
@@ -100,7 +100,7 @@ def parse_ssl(conn, cursor, path):
 
         for line in f.readlines():
             try:
-                line.replace('"', '\"')
+                line = line.replace('"', '\"').replace("\\", "-")
                 result = sp.match(line)
 
                 obj = init_obj()
