@@ -62,30 +62,29 @@ def parse_normal(conn, cursor, path):
     with open(path) as f:
         for line in f.readlines():
             try:
-                line = line.replace("\\", r"\\").replace('"', r'\"')
                 result = np.match(line)
 
                 obj = init_obj()
 
-                obj['ip'] = result.group('ip')
-                obj['userid'] = result.group('userid')
-                obj['timestamp'] = convert_timezone(result.group('date'), result.group('timezone'))
+                obj['ip'] = repr(result.group('ip'))
+                obj['userid'] = repr(result.group('userid'))
+                obj['timestamp'] = repr(convert_timezone(result.group('date'), result.group('timezone')))
 
-                obj['method'] = result.group('method')
-                obj['uri'] = result.group('uri')
-                obj['protocol'] = result.group('protocol')
+                obj['method'] = repr(result.group('method'))
+                obj['uri'] = repr(result.group('uri'))
+                obj['protocol'] = repr(result.group('protocol'))
             
-                obj['res_data_size'] = result.group('res_data_size')
+                obj['res_data_size'] = repr(result.group('res_data_size'))
                 
-                obj['referer'] = result.group('referer')
-                obj['user_agent'] = result.group('user_agent')
+                obj['referer'] = repr(result.group('referer'))
+                obj['user_agent'] = repr(result.group('user_agent'))
 
-                obj['mal_code'] = get_malcode(obj)
+                obj['mal_code'] = repr(get_malcode(obj))
 
             except Exception as e:
                 obj = init_unknown()
-                obj['ip'] = line[:9]
-                obj['data'] = line[9:].replace('"', "\'")
+                obj['ip'] = repr(line[:9])
+                obj['data'] = repr(line[9:])
 
             finally:
                 table_name = db.get_table(obj)
@@ -100,25 +99,24 @@ def parse_ssl(conn, cursor, path):
 
         for line in f.readlines():
             try:
-                line = line.replace("\\", "-").replace('"', '\"')
                 result = sp.match(line)
 
                 obj = init_obj()
 
-                obj['ip'] = result.group('ip')
-                obj['timestamp'] = convert_timezone(result.group('date'), result.group('timezone'))
+                obj['ip'] = repr(result.group('ip'))
+                obj['timestamp'] = repr(convert_timezone(result.group('date'), result.group('timezone')))
 
-                obj['method'] = result.group('method')
-                obj['uri'] = result.group('uri')
-                obj['protocol'] = result.group('protocol')
-                obj['res_data_size'] = result.group('res_data_size')
+                obj['method'] = repr(result.group('method'))
+                obj['uri'] = repr(result.group('uri'))
+                obj['protocol'] = repr(result.group('protocol'))
+                obj['res_data_size'] = repr(result.group('res_data_size'))
 
-                obj['mal_code'] = get_malcode(obj)
+                obj['mal_code'] = repr(get_malcode(obj))
 
             except Exception as e:
                 obj = init_unknown()
-                obj['ip'] = line[:9]
-                obj['data'] = line[9:].replace('"', "\'")
+                obj['ip'] = repr(line[:9])
+                obj['data'] = repr(line[9:])
 
             finally:
                 table_name = db.get_table(obj)
