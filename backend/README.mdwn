@@ -79,7 +79,7 @@
     - [x] Entity 생성
     - [x] repository 쿼리 메서드 추가 `findTop100By(from, to)`
 - **CORS 필터**
-  - [ ] CORS 필터 적용하는 김에 블로그 포스팅하기
+  - [x] CORS 필터 적용하는 김에 블로그 포스팅하기
 - **Dummy Log** 추가
   - [ ] import.sql 로 더미 로그 추가하기 & 포스팅
 - **API Documentation 채우기**
