@@ -19,6 +19,7 @@ def work(conn, cursor, root, filename):
         lp.parse_normal(conn, cursor, path)
 
 def main():
+    conn = None
     try:
         conn = db.connect()
         cursor = conn.cursor()
