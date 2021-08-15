@@ -14,7 +14,7 @@ import InsertChartOutlined from "@material-ui/icons/InsertChartOutlined";
 import PieChart from "@material-ui/icons/PieChart";
 
 // core components
-import CardStats from "components/Cards/CardStats.js";
+import CardStats from "components/Summary/CardStats.js";
 
 import componentStyles from "assets/theme/components/header.js";
 
@@ -35,7 +35,7 @@ const Header = () => {
             <Grid container>
               <Grid item xl={4} lg={6} xs={12}>
                 <CardStats
-                  subtitle="금일 총 트래픽"
+                  subtitle="오늘의 총 트래픽"
                   title="350,897"
                   icon={InsertChartOutlined}
                   color="bgError"
@@ -65,7 +65,7 @@ const Header = () => {
               </Grid>
               <Grid item xl={4} lg={6} xs={12}>
                 <CardStats
-                  subtitle="금일 보안 위협 트래픽"
+                  subtitle="오늘의 보안 위협 트래픽"
                   title="2,356"
                   icon={PieChart}
                   color="bgWarning"
@@ -93,11 +93,11 @@ const Header = () => {
                   }
                 />
               </Grid>
-              
+
               <Grid item xl={4} lg={6} xs={12}>
                 <CardStats
                   subtitle="오늘의 보안 레벨"
-                  title="LV : 4"
+                  title="LV : 3"
                   icon={EmojiEvents}
                   color="bgInfo"
                   footer={
@@ -115,10 +115,10 @@ const Header = () => {
                           width="1.5rem!important"
                           height="1.5rem!important"
                         />{" "}
-                        10%
+                        0.0412%
                       </Box>
                       <Box component="span" whiteSpace="nowrap">
-                        Since last month
+                        이상 트래픽이 다수 탐지되고 있습니다.
                       </Box>
                     </>
                   }
@@ -133,37 +133,3 @@ const Header = () => {
 };
 
 export default Header;
-
-/*
-
-<Grid item xl={4} lg={6} xs={12}>
-                <CardStats
-                  subtitle="Sales"
-                  title="924"
-                  icon={GroupAdd}
-                  color="bgWarningLight"
-                  footer={
-                    <>
-                      <Box
-                        component="span"
-                        fontSize=".875rem"
-                        color={theme.palette.warning.main}
-                        marginRight=".5rem"
-                        display="flex"
-                        alignItems="center"
-                      >
-                        <Box
-                          component={ArrowDownward}
-                          width="1.5rem!important"
-                          height="1.5rem!important"
-                        />{" "}
-                        1.10%
-                      </Box>
-                      <Box component="span" whiteSpace="nowrap">
-                        Since yesterday
-                      </Box>
-                    </>
-                  }
-                />
-              </Grid>
-              */
