@@ -333,7 +333,7 @@ let chartExample1 = {
 
   data1: () => {
     return {
-      labels: ["00", "01", "02", "03", "04", "05"],
+      labels: ["00", "01", "02", "03", "04", "05", "07", "08"],
       datasets: [
         {
           label: "Performance",
@@ -355,17 +355,15 @@ let chartExample1 = {
       ],
     };
   },
-
-
 };
 
 
 
 
 // above code, pie chart 
-var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
-var yValues = [55, 49, 44, 24, 15];
-var barColors = ["red", "green","blue","orange","brown"];
+var xValues = ["SQL-Injection", "Web-Shell", "RFI", "XSS"];
+var yValues = [55, 49, 44, 24];
+var barColors = ["red", "green", "blue", "orange"];
 
 
 // Example 2 of Chart inside src/views/Index.js (Total orders - Card)
@@ -380,59 +378,14 @@ let chartExample2 = {
   options: {
     title: {
       display: true,
-   //   text: "World Wide Wine Production"
     }
   }
-
-
-  /*
-  options: {
-    scales: {
-      yAxes: [
-        {
-          ticks: {
-            callback: function (value) {
-              if (!(value % 10)) {
-                //return '$' + value + 'k'
-                return value;
-              }
-            },
-          },
-        },
-      ],
-    },
-    tooltips: {
-      callbacks: {
-        label: function (item, data) {
-          var label = data.datasets[item.datasetIndex].label || "";
-          var yLabel = item.yLabel;
-          var content = "";
-          if (data.datasets.length > 1) {
-            content += label;
-          }
-          content += yLabel;
-          return content;
-        },
-      },
-    },
-  },
-  data: {
-    labels: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    datasets: [
-      {
-        label: "Sales",
-        data: [25, 20, 30, 22, 17, 29],
-        maxBarThickness: 10,
-      },
-    ],
-  },
-  */
 };
 
 module.exports = {
-  chartOptions, // used inside src/views/Index.js
-  parseOptions, // used inside src/views/Index.js
-  chartExample1, // used inside src/views/Index.js
-  chartExample2, // used inside src/views/Index.js
+  chartOptions,
+  parseOptions,
+  chartExample1,
+  chartExample2,
 };
 

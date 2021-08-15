@@ -1,6 +1,5 @@
 {
-  "name": "BoB-Boribob",
-  
+  "name": "frontend",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build && gulp licenses",
@@ -8,7 +7,6 @@
     "eject": "react-scripts eject",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
   },
-
   "dependencies": {
     "@emotion/react": "11.1.5",
     "@emotion/styled": "11.1.5",
@@ -29,20 +27,15 @@
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.2"
   },
-
-
-
   "eslintConfig": {
     "extends": [
       "react-app"
     ],
-    
     "plugins": [
       "unused-imports"
     ],
     "rules": {
       "no-unused-vars": "off",
-      "unused-imports/no-unused-imports": "error",
       "unused-imports/no-unused-vars": [
         "warn",
         {
@@ -69,7 +62,6 @@
       "last 1 safari version"
     ]
   },
-
   "devDependencies": {
     "eslint": "7.20.0",
     "eslint-plugin-unused-imports": "1.1.0",
