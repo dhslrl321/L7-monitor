@@ -27,19 +27,10 @@ const LogRow = ({ data }) => {
         {ip}
       </TableCell>
       <TableCell>
-        {uri}
-      </TableCell>
-      <TableCell classes={{ root: classes.tableCellRoot }}>
-        {method}
-      </TableCell>
-      <TableCell classes={{ root: classes.tableCellRoot }}>
-        {resDataSize}
-      </TableCell>
-      <TableCell classes={{ root: classes.tableCellRoot }}>
-        {referer}
-      </TableCell>
-      <TableCell classes={{ root: classes.tableCellRoot }}>
         {timestamp}
+      </TableCell>
+      <TableCell classes={{ root: classes.tableCellRoot }}>
+        {uri}
       </TableCell>
     </TableRow>
   )

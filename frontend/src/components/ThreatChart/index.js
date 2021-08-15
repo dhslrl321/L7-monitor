@@ -20,7 +20,6 @@ const useStyles = makeStyles(componentStyles);
 const ThreatChart = () => {
 
   const classes = useStyles();
-
   const theme = useTheme();
 
   return (
@@ -30,7 +29,7 @@ const ThreatChart = () => {
           title={
             <Box component="span" color={theme.palette.gray[600]}>
               최근 14일 동안 발생한 모든 공격 로그의 유형을 확인하세요
-          </Box>
+            </Box>
           }
           subheader="공격 유형"
           classes={{ root: classes.cardHeaderRoot }}
@@ -48,8 +47,7 @@ const ThreatChart = () => {
             variant: "h2",
             marginBottom: "0!important",
             color: "initial",
-          }}
-        ></CardHeader>
+          }} />
         <CardContent>
           <Box position="relative" height="230px">
             <Pie
@@ -84,8 +82,7 @@ let chartExample2 = {
     }]
   },
   options: {
-    title: {
-      display: false
-    }
+    responsive: true,
+    maintainAspectRatio: false
   }
 };

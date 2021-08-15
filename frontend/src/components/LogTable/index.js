@@ -20,8 +20,6 @@ import { logData } from "./data";
 
 const useStyles = makeStyles(componentStyles);
 
-
-
 const LogTable = () => {
 
   const classes = useStyles();
@@ -54,7 +52,9 @@ const LogTable = () => {
               <Field />
             </TableHead>
             <TableBody>
-              {logData.map(log => <LogRow key={log.id} data={log} />)}
+              {logData.map(log =>
+                <LogRow key={log.id} data={log} />)
+              }
             </TableBody>
           </Box>
         </TableContainer>
