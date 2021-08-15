@@ -14,7 +14,7 @@ import InsertChartOutlined from "@material-ui/icons/InsertChartOutlined";
 import PieChart from "@material-ui/icons/PieChart";
 
 // core components
-import CardStats from "components/Summary/CardStats";
+import CardStats from "components/Summary/CardStats.js";
 
 import componentStyles from "assets/theme/components/header.js";
 

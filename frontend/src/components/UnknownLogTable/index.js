@@ -31,7 +31,7 @@ const UnknownLogTable = () => {
           component={Typography}
           variant="h3"
           marginBottom="0!important">
-          24시간 내에 발생한 로그 확인하기
+          미확인 로그 확인하기
         </Box>
       </Grid>
     </Grid>
