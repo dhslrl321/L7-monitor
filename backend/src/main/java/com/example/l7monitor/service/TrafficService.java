@@ -1,13 +1,13 @@
 package com.example.l7monitor.service;
 
+import com.example.l7monitor.domain.dto.SecurityLevelResponse;
+import com.example.l7monitor.domain.dto.TotalSummariesResponse;
 import com.example.l7monitor.domain.dto.TotalTrafficResponse;
-import com.example.l7monitor.domain.entity.Abnormal;
-import com.example.l7monitor.domain.entity.Normal;
 import com.example.l7monitor.domain.repository.AbnormalRepository;
-import com.example.l7monitor.domain.repository.NormalRepository;
-import com.example.l7monitor.domain.type.PeriodType;
-import com.example.l7monitor.domain.type.TrafficType;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.l7monitor.domain.repository.TotalRepository;
+import com.example.l7monitor.domain.types.PeriodType;
+import com.example.l7monitor.domain.types.SecurityLevelType;
+import com.example.l7monitor.domain.types.TrafficType;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,17 +16,16 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 @Service
 @Transactional
 public class TrafficService {
 
-    private NormalRepository normalRepository;
+    private TotalRepository totalRepository;
     private AbnormalRepository abnormalRepository;
 
-    public TrafficService(NormalRepository normalRepository, AbnormalRepository abnormalRepository) {
-        this.normalRepository = normalRepository;
+    public TrafficService(TotalRepository totalRepository, AbnormalRepository abnormalRepository) {
+        this.totalRepository = totalRepository;
         this.abnormalRepository = abnormalRepository;
     }
 
@@ -46,7 +45,7 @@ public class TrafficService {
         List<TotalTrafficResponse> response = new ArrayList<>();
 
         for (long i = 1; i <= 8; i++) {
-            long count = normalRepository.countByTimestampBetween(from, to);
+            long count = totalRepository.countByTimestampBetween(from, to);
 
             response.add(TotalTrafficResponse.builder()
                     .id(i)
@@ -68,12 +67,12 @@ public class TrafficService {
      * @return 현재 시간으로부터 -24 시간의 모든 비정상 로그의 개수를 반환한다.
      */
     public TotalTrafficResponse getTodayTrafficSummaries(TrafficType trafficType) {
-        LocalDateTime from = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.now());
+        LocalDateTime from = LocalDateTime.now().minusDays(1L);
 
         long count = 0;
 
         if(trafficType.equals(TrafficType.ALL)) {
-            count = normalRepository.countByTimestampBetween(from, LocalDateTime.now());
+            count = totalRepository.countByTimestampBetween(from, LocalDateTime.now());
         } else if (trafficType.equals(TrafficType.THREAT)) {
             count = abnormalRepository.countByTimestampBetween(from, LocalDateTime.now());
         }
@@ -82,6 +81,73 @@ public class TrafficService {
                 .id(1L)
                 .count(count)
                 .timestamp(from)
+                .build();
+    }
+
+    /**
+     * 오늘의 보안 레벨을 계산하여 반환한다.
+     * 계산식 : (비정상 요청 / 일반 요청)
+     * @return
+     */
+    public SecurityLevelResponse getTodaySecurityLevel() {
+
+        LocalDateTime from = LocalDateTime.now().minusDays(1L);
+
+        long normalCount = totalRepository.countByTimestampBetween(from, LocalDateTime.now());
+        long abnormalCount = abnormalRepository.countByTimestampBetween(from, LocalDateTime.now());
+
+        SecurityLevelType level = null;
+
+        double ratio = (double) abnormalCount / (double) normalCount;
+
+        if(ratio <= 0.001) {
+            level = SecurityLevelType.LEVEL1;
+        } else if(0.001 < ratio && ratio <= 0.01) {
+            level = SecurityLevelType.LEVEL2;
+        } else if(0.01 < ratio && ratio <= 0.1) {
+            level = SecurityLevelType.LEVEL3;
+        } else if(0.1 < ratio) {
+            level = SecurityLevelType.LEVEL4;
+        }
+
+        SecurityLevelResponse response = SecurityLevelResponse.builder()
+                .level(level.getLevel())
+                .description(level.getDescription())
+                .build();
+
+        response.changeRatioParsedString(ratio);
+
+        return response;
+    }
+
+    /**
+     * 오늘의 트래픽 요약을 한 번에 반환한다.
+     * @return 오늘의 트래픽 요약
+     */
+    public TotalSummariesResponse getTodaySummaries() {
+        LocalDateTime now = LocalDateTime.now();
+
+        long allTraffic = totalRepository.countByTimestampBetween(now.minusDays(1L), now);
+
+        long abnormalTraffic = abnormalRepository.countByTimestampBetween(now.minusDays(1L), now);
+
+        TotalTrafficResponse totalTrafficResponse = TotalTrafficResponse.builder()
+                .id(1L)
+                .count(allTraffic)
+                .timestamp(now.minusDays(1L))
+                .build();
+
+        TotalTrafficResponse abnormalTrafficResponse = TotalTrafficResponse.builder()
+                .id(1L)
+                .count(abnormalTraffic)
+                .timestamp(now.minusDays(1L))
+                .build();
+
+
+        return TotalSummariesResponse.builder()
+                .totalTraffic(totalTrafficResponse)
+                .abnormalTraffic(abnormalTrafficResponse)
+                .securityLevel(getTodaySecurityLevel())
                 .build();
     }
 

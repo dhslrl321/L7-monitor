@@ -1,10 +1,13 @@
 package com.example.l7monitor.service;
 
+import com.example.l7monitor.domain.dto.SecurityLevelResponse;
+import com.example.l7monitor.domain.dto.TotalSummariesResponse;
 import com.example.l7monitor.domain.dto.TotalTrafficResponse;
 import com.example.l7monitor.domain.repository.AbnormalRepository;
-import com.example.l7monitor.domain.repository.NormalRepository;
-import com.example.l7monitor.domain.type.PeriodType;
-import com.example.l7monitor.domain.type.TrafficType;
+import com.example.l7monitor.domain.repository.TotalRepository;
+import com.example.l7monitor.domain.types.PeriodType;
+import com.example.l7monitor.domain.types.SecurityLevelType;
+import com.example.l7monitor.domain.types.TrafficType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,19 +28,19 @@ class TrafficServiceTest {
 
     private TrafficService trafficService;
 
-    private final NormalRepository normalRepository = mock(NormalRepository.class);
+    private final TotalRepository totalRepository = mock(TotalRepository.class);
     private final AbnormalRepository abnormalRepository = mock(AbnormalRepository.class);
 
     @BeforeEach
     void init() {
 
-        trafficService = new TrafficService(normalRepository, abnormalRepository);
+        trafficService = new TrafficService(totalRepository, abnormalRepository);
 
-        given(normalRepository.countByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class)))
-                .willReturn(5L);
+        given(totalRepository.countByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class)))
+                .willReturn(12327L);
         
         given(abnormalRepository.countByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class)))
-                .willReturn(7L);
+                .willReturn(417L);
     }
 
     @ParameterizedTest
@@ -52,7 +55,7 @@ class TrafficServiceTest {
         assertAll(
                 () -> assertEquals(8, response.size()),
                 () -> assertEquals(1, firstTotalResponseData.getId()),
-                () -> assertEquals(5, firstTotalResponseData.getCount()),
+                () -> assertEquals(12327L, firstTotalResponseData.getCount()),
                 () -> assertNotNull(firstTotalResponseData.getTimestamp())
         );
     }
@@ -73,12 +76,36 @@ class TrafficServiceTest {
         TotalTrafficResponse response = trafficService
                 .getTodayTrafficSummaries(trafficType);
 
-        long count = trafficType.equals(TrafficType.ALL) ? 5 : 7;
+        long count = trafficType.equals(TrafficType.ALL) ? 12327L : 417L;
 
         assertAll(
                 () -> assertEquals(1, response.getId()),
                 () -> assertEquals(count, response.getCount()),
                 () -> assertNotNull(response.getTimestamp())
+        );
+    }
+
+    @Test
+    @DisplayName("오늘 하루의 보안 레벨 - 성공")
+    void getTodaySecurityLevel() {
+        SecurityLevelResponse response = trafficService.getTodaySecurityLevel();
+
+        assertAll(
+                () -> assertEquals(SecurityLevelType.LEVEL3.getLevel(), response.getLevel()),
+                () -> assertEquals(SecurityLevelType.LEVEL3.getDescription(), response.getDescription()),
+                () -> assertEquals("0.03383%", response.getRatio())
+        );
+    }
+
+    @Test
+    @DisplayName("오늘의 트랙픽 요약을 모두 반환한다 -성공")
+    void getTodayTrafficsSummaries() {
+        TotalSummariesResponse response = trafficService.getTodaySummaries();
+
+        assertAll(
+                () -> assertNotNull(response.getTotalTraffic()),
+                () -> assertNotNull(response.getAbnormalTraffic()),
+                () -> assertNotNull(response.getSecurityLevel())
         );
     }
 

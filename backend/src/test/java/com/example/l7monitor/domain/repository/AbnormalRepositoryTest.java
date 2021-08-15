@@ -1,6 +1,7 @@
 package com.example.l7monitor.domain.repository;
 
 import com.example.l7monitor.domain.entity.Abnormal;
+import com.example.l7monitor.domain.entity.MalCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,8 +33,20 @@ class AbnormalRepositoryTest {
     @Autowired
     private AbnormalRepository abnormalRepository;
 
+    @Autowired
+    private MalCodeRepository malCodeRepository;
+
     @BeforeEach
     void setUp() {
+
+        List<MalCode> threats = List.of(
+                new MalCode(1, "XSS"),
+                new MalCode(2, "SQL-Injection"),
+                new MalCode(3, "Web-Shell")
+        );
+
+        malCodeRepository.saveAll(threats);
+
         IntStream.range(0, 20).forEach(i -> generateAbnormalLogData(abnormalRepository, i));
     }
 
@@ -48,6 +62,19 @@ class AbnormalRepositoryTest {
         assertEquals(4, count);
     }
 
+    @Test
+    @DisplayName("최근 14 일간 공격 트래픽 개수 확인하기 - 성공")
+    void countByMalCode_TimestampBetween() {
+        long count = abnormalRepository.countByMalCodeCodeAndTimestampBetween(
+                1, LocalDateTime.now().minusDays(14L), LocalDateTime.now());
+
+        assertEquals(20, count);
+    }
+
+    private static void countAllByTimestampBetween() {
+
+    }
+
     private static void generateAbnormalLogData(JpaRepository abnormalRepository, int sequenceNumber) {
 
         if(sequenceNumber >= times.length) {
@@ -60,7 +87,7 @@ class AbnormalRepositoryTest {
                 .ip(ip)
                 .timestamp(times[sequenceNumber])
                 .uri("/page?type=<script>alert(1)</script>")
-                .malCode(200)
+                .malCode(new MalCode(1, "XSS"))
                 .build();
 
         abnormalRepository.save(normal);
