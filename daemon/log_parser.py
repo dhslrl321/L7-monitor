@@ -62,7 +62,6 @@ def parse_normal(conn, cursor, path):
     with open(path) as f:
         for line in f.readlines():
             try:
-                line.replace('"', '\"')
                 result = np.match(line)
 
                 obj = init_obj()
@@ -89,7 +88,7 @@ def parse_normal(conn, cursor, path):
 
             finally:
                 table_name = db.get_table(obj)
-                db.insert(cursor, table_name, obj)
+                db.insert(conn, cursor, table_name, obj)
                 conn.commit()
 
 
@@ -100,7 +99,6 @@ def parse_ssl(conn, cursor, path):
 
         for line in f.readlines():
             try:
-                line.replace('"', '\"')
                 result = sp.match(line)
 
                 obj = init_obj()
@@ -122,5 +120,5 @@ def parse_ssl(conn, cursor, path):
 
             finally:
                 table_name = db.get_table(obj)
-                db.insert(cursor, table_name, obj)
+                db.insert(conn, cursor, table_name, obj)
                 conn.commit()
