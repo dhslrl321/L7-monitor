@@ -18,15 +18,11 @@ import PieChart from "@material-ui/icons/PieChart";
 import CardStats from "components/Summary/CardStats.js";
 import componentStyles from "assets/theme/components/header.js";
 
-// import each functions
-import DrawSecurityLevel from "./securityLevel";
-import DrawThreatTraffic from "./threatTraffic";
-import DrawTotalTraffic from "./totalTraffic";
 
 
 const useStyles = makeStyles(componentStyles);
 
-const Header = () => {
+const DrawTotalTraffic = () => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -44,28 +40,38 @@ const Header = () => {
 
   return (
     <>
-      <button onClick={handleOnClick}>hello</button>
-      <div className={classes.header}>
-        <Container
-          maxWidth={false}
-          component={Box}
-          classes={{ root: classes.containerRoot }}
-        >
-          <div>
-            <Grid container>
-                
-
-            <DrawTotalTraffic/>
-            <DrawThreatTraffic/>
-            <DrawSecurityLevel/>
-            
-            
-            </Grid>
-          </div>
-        </Container>
-      </div>
+              <Grid item xl={4} lg={6} xs={12}>
+                <CardStats
+                  subtitle="오늘의 총 트래픽"
+                  title= {totalTraffic}
+                  icon={InsertChartOutlined}
+                  color="bgError"
+                  footer={
+                    <>
+                      <Box
+                        component="span"
+                        fontSize=".875rem"
+                        color={theme.palette.success.main}
+                        marginRight=".5rem"
+                        display="flex"
+                        alignItems="center"
+                      >
+                        <Box
+                          component={ArrowUpward}
+                          width="1.5rem!important"
+                          height="1.5rem!important"
+                        />{" "}
+                        3.48%
+                      </Box>
+                      <Box component="span" whiteSpace="nowrap">
+                        Since last month
+                      </Box>
+                    </>
+                  }
+                />
+              </Grid>
     </>
   );
 };
 
-export default Header;
+export default DrawTotalTraffic;
