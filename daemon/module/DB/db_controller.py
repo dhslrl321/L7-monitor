@@ -2,7 +2,7 @@ import pymysql
 import json
 
 def connect():
-    with open('config.json', 'r') as f:
+    with open('module/DB/config.json', 'r') as f:
         config = json.load(f)
 
     db = pymysql.connect(
