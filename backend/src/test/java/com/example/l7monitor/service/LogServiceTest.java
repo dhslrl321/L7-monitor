@@ -42,7 +42,7 @@ class LogServiceTest {
                 UnknownLog.builder().id(3L).ip("192.168.0.1").data("/url").build(),
                 UnknownLog.builder().id(4L).ip("192.168.0.1").data("/url").build());
 
-        given(totalRepository.findAllByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class)))
+        given(totalRepository.findTop100ByTimestampBetween(any(LocalDateTime.class), any(LocalDateTime.class)))
                 .willReturn(totals);
 
         given(unknownLogRepository.findAll()).willReturn(unknownLogs);

@@ -37,7 +37,7 @@ public class LogService {
      * @return Log Dto
      */
     public List<LogResponseData> getAllLog() {
-        List<Total> totalLogs = totalRepository.findAllByTimestampBetween(
+        List<Total> totalLogs = totalRepository.findTop100ByTimestampBetween(
                 LocalDateTime.now().minusDays(1L), LocalDateTime.now());
 
         return totalLogs.stream()

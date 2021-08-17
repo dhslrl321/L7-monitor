@@ -9,5 +9,5 @@ import java.util.List;
 public interface TotalRepository extends JpaRepository<Total, Long> {
     long countByTimestampBetween(LocalDateTime from, LocalDateTime to);
 
-    List<Total> findAllByTimestampBetween(LocalDateTime from, LocalDateTime to);
+    List<Total> findTop100ByTimestampBetween(LocalDateTime minusDays, LocalDateTime now);
 }
