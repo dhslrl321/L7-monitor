@@ -12,10 +12,9 @@ import Grid from "@material-ui/core/Grid";
 import componentStyles from "assets/theme/components/header.js";
 
 // import each functions
-import SecurityLevel from "./SecurityLevel";
-import ThreatTraffic from "./ThreatTraffic";
-import TotalTraffic from "./TotalSummary";
-import TotalSummary from "./TotalSummary";
+import SecurityLevel from "components/presenter/Summary/SecurityLevel";
+import ThreatTraffic from "components/presenter/Summary/ThreatSummary"
+import TotalSummary from "components/presenter/Summary/TotalSummary"
 
 
 const useStyles = makeStyles(componentStyles);
@@ -34,11 +33,11 @@ const Header = () => {
         >
           <div>
             <Grid container>
-                
-            <TotalSummary/>
-            <ThreatTraffic/>
-            <SecurityLevel/>
-            
+
+              <TotalSummary />
+              <ThreatTraffic />
+              <SecurityLevel />
+
             </Grid>
           </div>
         </Container>

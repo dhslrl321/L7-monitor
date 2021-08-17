@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
@@ -16,11 +16,11 @@ import componentStyles from "assets/theme/views/admin/dashboard.js";
 import Field from "components/presenter/UnknownLogTable/Field";
 import LogRow from "components/presenter/UnknownLogTable/LogRow";
 
-import { logData } from "./data";
+import { fetchUnknownLog } from "service/LogService";
 
 const useStyles = makeStyles(componentStyles);
 
-const UnknownLogTable = () => {
+const UnknownLogTable = ({ logDatas }) => {
 
   const classes = useStyles();
 
@@ -52,8 +52,8 @@ const UnknownLogTable = () => {
               <Field />
             </TableHead>
             <TableBody>
-              {logData.map(log =>
-                <LogRow key={log.id} data={log} />)
+              {logDatas.map((log, index) =>
+                <LogRow key={index} data={log} />)
               }
             </TableBody>
           </Box>

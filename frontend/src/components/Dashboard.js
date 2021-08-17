@@ -18,6 +18,7 @@ import TrafficDashboard from "components/presenter/TrafficDashboard/index";
 import LogTableContainer from "components/container/LogTableContainer";
 import ThreatChartContainer from "components/container/ThreatChartContainer";
 import TrafficDashboardContainer from "components/container/TrafficDashboardContainer";
+import UnknownLogTableContainer from "components/container/UnknownLogTableContainer";
 
 import componentStyles from "assets/theme/views/admin/dashboard.js";
 
@@ -40,7 +41,7 @@ function Dashboard() {
 
         <Grid container component={Box} marginTop="3rem">
           <LogTableContainer />
-          <UnknownLogTable />
+          <UnknownLogTableContainer />
           <ThreatChartContainer />
         </Grid>
       </Container>
