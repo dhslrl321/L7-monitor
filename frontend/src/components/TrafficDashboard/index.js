@@ -1,21 +1,13 @@
-import React from "react";
-import { useState } from 'react' // to manage statement adding option
-// javascipt plugin for creating charts
+import React, { useState } from "react";
 import { Chart } from "chart.js";
-// react plugin used to create charts
 import { Line } from "react-chartjs-2";
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
 
 import Grid from "@material-ui/core/Grid";
 
-import Typography from "@material-ui/core/Typography";
 import {
   chartOptions,
   parseOptions,
@@ -31,7 +23,6 @@ const useStyles = makeStyles(componentStyles);
 const TrafficDashboard = () => {
 
   const classes = useStyles();
-  const theme = useTheme();
 
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
