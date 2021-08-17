@@ -1,8 +1,7 @@
 import os
 import sys
-import log_parser as lp
-import test_parser as tp
-import db_controller as db
+import module.log_parser as lp
+import module.DB.db_controller as db
 
 ## *ROOT_DIR는 개인별 websvr_attack 폴더 저장되어있는 디렉토리로 설정 요망
 ROOT_DIR = "C:/Users/jenny/projects/"

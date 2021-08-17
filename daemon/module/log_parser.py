@@ -1,7 +1,7 @@
 import datetime
-import detector as dt
 import re
-import db_controller as db
+from . import detector as dt
+from .DB import db_controller as db
 
 normal_exp = r"(?P<ip>\S+) (?P<remote_log_name>\S+) (?P<userid>\S+) (- )?\[(?P<date>.+)(?= ) (?P<timezone>\S+)\] \"(?P<request>(?P<method>[A-Z]+) (?P<uri>\S+) (?P<protocol>HTTPS?/[0-9.]+)?|-)?\" (?P<status_code>\d{3}) (?P<res_data_size>\d+|-)?( (\"(?P<referer>\S+)\") (\"(?P<user_agent>\S+)\"))?"
 ssl_exp = r"\[(?P<date>\S+)(?= ) (?P<timezone>\S+)\] (?P<ip>\S+) (.*?) (.*?) \"(?P<request>(?P<method>[A-Z]+) (?P<uri>\S+) (?P<protocol>HTTPS?/[0-9.]+)?|-)\" (?P<res_data_size>\d{3}|-)?"
