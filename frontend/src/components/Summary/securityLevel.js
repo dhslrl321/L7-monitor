@@ -26,15 +26,15 @@ const DrawSecurityLevel = () => {
   const theme = useTheme();
 
 
-  const[securityLevel, setSecurityLevel] = useState(0);
-  const[securityDescription, setSecurityDescription] = useState(0);
-  const[securityRatio, setSecurityRatio] = useState(0);
+  const [securityLevel, setSecurityLevel] = useState(0);
+  const [securityDescription, setSecurityDescription] = useState(0);
+  const [securityRatio, setSecurityRatio] = useState(0);
 
 
-  useEffect(()=>{
+  useEffect(() => {
     const level = 3
     const description = "주의 단계 (이상 트래픽 0.01%)- 이상 트래픽이 다수 탐지되고 있습니다."
-    const ratio =  "0.0412%"
+    const ratio = "0.0412%"
 
     setSecurityLevel(level)
     setSecurityDescription(description)
@@ -45,32 +45,32 @@ const DrawSecurityLevel = () => {
 
   return (
     <>
-              <Grid item xl={4} lg={6} xs={12}>
-                <CardStats
-                  subtitle="오늘의 보안 레벨"
-                  title={"LV." + securityLevel}
-                  icon={EmojiEvents}
-                  color="bgInfo"
-                  footer={
-                    <>
-                      <Box
-                        component="span"
-                        fontSize=".875rem"
-                        color={theme.palette.success.main}
-                        marginRight=".5rem"
-                        display="flex"
-                        alignItems="center"
-                      >
-                        <Box/>{" "}
-                        {securityRatio}
-                      </Box>
-                      <Box component="span" whiteSpace="nowrap">
-                        {securityDescription}
-                      </Box>
-                    </>
-                  }
-                />
-              </Grid>
+      <Grid item xl={4} lg={6} xs={12}>
+        <CardStats
+          subtitle="오늘의 보안 레벨"
+          title={"LV." + securityLevel}
+          icon={EmojiEvents}
+          color="bgInfo"
+          footer={
+            <>
+              <Box
+                component="span"
+                fontSize=".875rem"
+                color={theme.palette.success.main}
+                marginRight=".5rem"
+                display="flex"
+                alignItems="center"
+              >
+                <Box />{" "}
+                {securityRatio}
+              </Box>
+              <Box component="span" whiteSpace="nowrap">
+                {securityDescription}
+              </Box>
+            </>
+          }
+        />
+      </Grid>
     </>
   );
 };

@@ -284,16 +284,8 @@ function parseOptions(parent, options) {
   }
 }
 
-
-
-
-
-
-
-
-
 // Example 1 of Chart inside src/views/Index.js (Sales value - Card)
-let chartExample1 = {
+let lineChart = {
   options: {
     scales: {
       yAxes: [
@@ -305,7 +297,7 @@ let chartExample1 = {
           ticks: {
             callback: function (value) {
               if (!(value % 10)) {
-                return "$" + value + "k";
+                return value + "k";
               }
             },
           },
@@ -328,33 +320,7 @@ let chartExample1 = {
         },
       },
     },
-  },
-
-
-  data1: () => {
-    return {
-      labels: ["00", "01", "02", "03", "04", "05", "07", "08"],
-      datasets: [
-        {
-          label: "Performance",
-          data: [0, 20, 10, 30, 15, 40, 20, 60, 60],
-        },
-      ],
-    };
-  },
-
-
-  data2: () => {
-    return {
-      labels: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
-      datasets: [
-        {
-          label: "Performance",
-          data: [0, 20, 5, 25, 10, 30, 15, 40, 40],
-        },
-      ],
-    };
-  },
+  }
 };
 
 
@@ -385,7 +351,7 @@ let chartExample2 = {
 module.exports = {
   chartOptions,
   parseOptions,
-  chartExample1,
+  lineChart,
   chartExample2,
 };
 

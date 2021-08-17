@@ -4,14 +4,20 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
+
 import Grid from "@material-ui/core/Grid";
 
 // core components
-import Summary from "components/Summary/index";
-import ThreatChart from "components/ThreatChart/index";
-import UnknownLogTable from "components/UnknownLogTable/index";
-import LogTable from "components/LogTable/index";
-import TrafficDashboard from "components/TrafficDashboard/index";
+// todo 지금은 presenter 를 import 하지만 추후에 container 를 import 해야 함
+import Summary from "components/presenter/Summary/index";
+import ThreatChart from "components/presenter/ThreatChart/index";
+import UnknownLogTable from "components/presenter/UnknownLogTable/index";
+import TrafficDashboard from "components/presenter/TrafficDashboard/index";
+
+// container
+import LogTableContainer from "components/container/LogTableContainer";
+import ThreatChartContainer from "components/container/ThreatChartContainer";
+import TrafficDashboardContainer from "components/container/TrafficDashboardContainer";
 
 import componentStyles from "assets/theme/views/admin/dashboard.js";
 
@@ -29,13 +35,13 @@ function Dashboard() {
         classes={{ root: classes.containerRoot }}>
 
         <Grid container>
-          <TrafficDashboard />
+          <TrafficDashboardContainer />
         </Grid>
 
         <Grid container component={Box} marginTop="3rem">
-          <LogTable />
+          <LogTableContainer />
           <UnknownLogTable />
-          <ThreatChart />
+          <ThreatChartContainer />
         </Grid>
       </Container>
     </>

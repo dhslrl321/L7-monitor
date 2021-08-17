@@ -13,14 +13,14 @@ import Typography from "@material-ui/core/Typography";
 
 import componentStyles from "assets/theme/views/admin/dashboard.js";
 
-import Field from "components/LogTable/Field";
-import LogRow from "components/LogTable/LogRow";
+import Field from "components/presenter/UnknownLogTable/Field";
+import LogRow from "components/presenter/UnknownLogTable/LogRow";
 
 import { logData } from "./data";
 
 const useStyles = makeStyles(componentStyles);
 
-const LogTable = () => {
+const UnknownLogTable = () => {
 
   const classes = useStyles();
 
@@ -31,7 +31,7 @@ const LogTable = () => {
           component={Typography}
           variant="h3"
           marginBottom="0!important">
-          24시간 내에 발생한 로그 확인하기
+          미확인 로그 확인하기
         </Box>
       </Grid>
     </Grid>
@@ -60,7 +60,7 @@ const LogTable = () => {
         </TableContainer>
       </Card>
     </Grid>
-  )
+  );
 }
 
-export default LogTable
+export default UnknownLogTable
