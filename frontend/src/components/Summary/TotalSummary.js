@@ -4,15 +4,9 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-// @material-ui/icons components
-import ArrowDownward from "@material-ui/icons/ArrowDownward";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
-import EmojiEvents from "@material-ui/icons/EmojiEvents";
 //import GroupAdd from "@material-ui/icons/GroupAdd";
 import InsertChartOutlined from "@material-ui/icons/InsertChartOutlined";
-import PieChart from "@material-ui/icons/PieChart";
 
 // core components
 import CardStats from "components/Summary/CardStats.js";
@@ -22,20 +16,20 @@ import componentStyles from "assets/theme/components/header.js";
 
 const useStyles = makeStyles(componentStyles);
 
-const DrawTotalTraffic = () => {
+const TotalTraffic = () => {
   const classes = useStyles();
   const theme = useTheme();
 
   const [totalTraffic, setTotalTraffic] = useState(0);
+  const [timestamp, setTimestamp] = useState(0);
   
-  const handleOnClick = () => {
-    setTotalTraffic(totalTraffic+1) 
-  }
 
   useEffect(()=>{
     // 여기서 API 호출 일어남 --> 응답 데이터
-    const response = 100 // 응답값
-    setTotalTraffic(response)
+    const count = 78291 // 응답값
+    const time = "2021-08-12T15:59:36.946549"
+    setTotalTraffic(count)
+    setTimestamp(time)
   })
 
   return (
@@ -56,15 +50,11 @@ const DrawTotalTraffic = () => {
                         display="flex"
                         alignItems="center"
                       >
-                        <Box
-                          component={ArrowUpward}
-                          width="1.5rem!important"
-                          height="1.5rem!important"
-                        />{" "}
-                        3.48%
+                        <Box/>
+                        {timestamp}
                       </Box>
                       <Box component="span" whiteSpace="nowrap">
-                        Since last month
+                        Total traffic from 00:00 - 23:59
                       </Box>
                     </>
                   }
@@ -74,4 +64,4 @@ const DrawTotalTraffic = () => {
   );
 };
 
-export default DrawTotalTraffic;
+export default TotalTraffic;

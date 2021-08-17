@@ -3,14 +3,7 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-// @material-ui/icons components
-import ArrowDownward from "@material-ui/icons/ArrowDownward";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
-import EmojiEvents from "@material-ui/icons/EmojiEvents";
-//import GroupAdd from "@material-ui/icons/GroupAdd";
-import InsertChartOutlined from "@material-ui/icons/InsertChartOutlined";
 import PieChart from "@material-ui/icons/PieChart";
 
 // core components
@@ -21,17 +14,28 @@ import componentStyles from "assets/theme/components/header.js";
 
 const useStyles = makeStyles(componentStyles);
 
-const DrawThreatTraffic = () => {
+const ThreatTraffic = () => {
   const classes = useStyles();
   const theme = useTheme();
 
+const [todayTraffic, setTodayTraffic] = useState(0);
+const [timestamp, setTimeStamp] = useState(0);
+
+useEffect(()=> {  
+
+  const count = 821
+  const time = "2021-08-12T15:59:36.946575"
+
+  setTodayTraffic(count)
+  setTimeStamp(time)
+})
 
   return (
     <>
               <Grid item xl={4} lg={6} xs={12}>
                 <CardStats
                   subtitle="오늘의 보안 위협 트래픽"
-                  title="2,356"
+                  title={todayTraffic}
                   icon={PieChart}
                   color="bgWarning"
                   footer={
@@ -44,15 +48,11 @@ const DrawThreatTraffic = () => {
                         display="flex"
                         alignItems="center"
                       >
-                        <Box
-                          component={ArrowDownward}
-                          width="1.5rem!important"
-                          height="1.5rem!important"
-                        />{" "}
-                        3.48%
+                        <Box/>{" "}
+                        {timestamp}
                       </Box>
                       <Box component="span" whiteSpace="nowrap">
-                        Since last week
+                       Total Abnomal traffic from 00:00 - 23:59
                       </Box>
                     </>
                   }
@@ -63,4 +63,4 @@ const DrawThreatTraffic = () => {
   );
 };
 
-export default DrawThreatTraffic;
+export default ThreatTraffic;
