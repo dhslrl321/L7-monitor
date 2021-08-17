@@ -68,11 +68,7 @@ class AbnormalRepositoryTest {
         long count = abnormalRepository.countByMalCodeCodeAndTimestampBetween(
                 1, LocalDateTime.now().minusDays(14L), LocalDateTime.now());
 
-        assertEquals(20, count);
-    }
-
-    private static void countAllByTimestampBetween() {
-
+        assertEquals(21, count);
     }
 
     private static void generateAbnormalLogData(JpaRepository abnormalRepository, int sequenceNumber) {
