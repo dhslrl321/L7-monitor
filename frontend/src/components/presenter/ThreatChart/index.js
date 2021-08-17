@@ -1,7 +1,7 @@
 import React from 'react'
 
 // react plugin used to create charts
-import { Pie, Doughnut } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -10,7 +10,6 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
-
 
 import componentStyles from "assets/theme/views/admin/dashboard.js";
 

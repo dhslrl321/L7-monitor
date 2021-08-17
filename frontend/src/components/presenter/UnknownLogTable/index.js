@@ -13,8 +13,8 @@ import Typography from "@material-ui/core/Typography";
 
 import componentStyles from "assets/theme/views/admin/dashboard.js";
 
-import Field from "components/UnknownLogTable/Field";
-import LogRow from "components/UnknownLogTable/LogRow";
+import Field from "components/presenter/UnknownLogTable/Field";
+import LogRow from "components/presenter/UnknownLogTable/LogRow";
 
 import { logData } from "./data";
 

@@ -14,7 +14,7 @@ import {
   lineChart
 } from "variables/charts.js";
 
-import Header from "components/TrafficDashboard/Header";
+import Header from "components/presenter/TrafficDashboard/Header";
 
 import componentStyles from "assets/theme/views/admin/dashboard.js";
 
