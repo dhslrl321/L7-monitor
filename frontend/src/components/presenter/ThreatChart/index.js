@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 // react plugin used to create charts
 import { Pie } from "react-chartjs-2";
@@ -16,10 +16,27 @@ import componentStyles from "assets/theme/views/admin/dashboard.js";
 const useStyles = makeStyles(componentStyles);
 
 
-const ThreatChart = () => {
+const ThreatChart = ({ threatData }) => {
 
   const classes = useStyles();
   const theme = useTheme();
+
+  const { sqli, rfi, wshell, xss } = threatData;
+
+  const chartData = {
+    labels: ["SQL-Injection", "Web-Shell", "RFI", "XSS"],
+    datasets: [{
+      backgroundColor: ["red", "green", "blue", "orange"],
+      data: [sqli.count, rfi.count, wshell.count, xss.count],
+    }]
+  };
+
+  const threatType = ["SQL-Injection", "Web-Shell", "RFI", "XSS"];
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false
+  };
 
   return (
     <Grid item xs={12} xl={4}>
@@ -50,9 +67,9 @@ const ThreatChart = () => {
         <CardContent>
           <Box position="relative" height="230px">
             <Pie
-              label={xValues}
-              data={chartExample2.data}
-              options={chartExample2.options}
+              label={threatType}
+              data={chartData}
+              options={chartOptions}
             />
           </Box>
         </CardContent>
@@ -62,26 +79,3 @@ const ThreatChart = () => {
 }
 
 export default ThreatChart
-
-// 차트 데이터
-
-var xValues = ["SQL-Injection", "Web-Shell", "RFI", "XSS"];
-var yValues = [55, 49, 44, 24];
-var barColors = ["red", "green", "blue", "orange"];
-
-
-// Example 2 of Chart inside src/views/Index.js (Total orders - Card)
-let chartExample2 = {
-  labels: xValues,
-  data: {
-    labels: xValues,
-    datasets: [{
-      backgroundColor: barColors,
-      data: yValues
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false
-  }
-};

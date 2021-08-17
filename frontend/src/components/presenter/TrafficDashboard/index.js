@@ -20,21 +20,13 @@ import componentStyles from "assets/theme/views/admin/dashboard.js";
 
 const useStyles = makeStyles(componentStyles);
 
-const TrafficDashboard = () => {
+const TrafficDashboard = ({ activeNav, chartData, toggleNav }) => {
 
   const classes = useStyles();
-
-  const [activeNav, setActiveNav] = useState(1);
-  const [chartExample1Data, setChartExample1Data] = useState("data1");
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
   }
-
-  const toggleNavs = (index) => {
-    setActiveNav(index);
-    setChartExample1Data("data" + index);
-  };
 
   return (
     <Grid
@@ -46,13 +38,12 @@ const TrafficDashboard = () => {
       classes={{ root: classes.gridItemRoot }}
     >
       <Card classes={{ root: classes.cardRoot + " " + classes.cardRootBgGradient }}>
-        <Header handleButtonClick={toggleNavs} activeNav={activeNav} />
+        <Header handleButtonClick={toggleNav} activeNav={activeNav} />
         <CardContent>
           <Box position="relative" height="350px">
             <Line
-              data={chartData[chartExample1Data]}
+              data={chartData}
               options={lineChart.options}
-              getDatasetAtEvent={(e) => console.log(e)}
             />
           </Box>
         </CardContent>
@@ -63,38 +54,3 @@ const TrafficDashboard = () => {
 
 export default TrafficDashboard;
 
-const chartData = {
-  data1: () => {
-    return {
-      labels: ["00", "01", "02", "03", "04", "05", "07"],
-      datasets: [
-        {
-          data: [5210, 4120, 6614, 3381, 8115, 6721, 5344],
-        },
-      ],
-    };
-  },
-
-
-  data2: () => {
-    return {
-      labels: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
-      datasets: [
-        {
-          data: [611, 210, 512, 150, 281, 270, 56],
-        },
-      ],
-    };
-  },
-
-  data3: () => {
-    return {
-      labels: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
-      datasets: [
-        {
-          data: [12, 16, 21, 13, 23, 35, 16],
-        },
-      ],
-    }
-  }
-}

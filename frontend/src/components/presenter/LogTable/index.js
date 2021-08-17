@@ -16,11 +16,9 @@ import componentStyles from "assets/theme/views/admin/dashboard.js";
 import Field from "components/presenter/LogTable/Field";
 import LogRow from "components/presenter/LogTable/LogRow";
 
-import { logData } from "./data";
-
 const useStyles = makeStyles(componentStyles);
 
-const LogTable = () => {
+const LogTable = ({ logDatas }) => {
 
   const classes = useStyles();
 
@@ -52,8 +50,8 @@ const LogTable = () => {
               <Field />
             </TableHead>
             <TableBody>
-              {logData.map(log =>
-                <LogRow key={log.id} data={log} />)
+              {logDatas.map((log, index) =>
+                <LogRow key={index} data={log} />)
               }
             </TableBody>
           </Box>

@@ -50,8 +50,7 @@ const Header = ({ handleButtonClick, activeNav }) => {
             <Box
               justifyContent="flex-end"
               display="flex"
-              flexWrap="wrap"
-            >
+              flexWrap="wrap">
               <Button
                 variant="contained"
                 color="primary"
@@ -63,18 +62,18 @@ const Header = ({ handleButtonClick, activeNav }) => {
                     activeNav === 1
                       ? ""
                       : classes.buttonRootUnselected,
-                }}
-              >
-                Day
-                        </Button>
-              <Button variant="contained" color="primary" onClick={() => handleButtonClick(2)}
+                }}>
+                Week
+              </Button>
+              <Button variant="contained" color="primary" component={Box}
+                marginRight="1rem!important" onClick={() => handleButtonClick(2)}
                 classes={{
                   root:
                     activeNav === 2
                       ? ""
                       : classes.buttonRootUnselected,
                 }}>
-                Week</Button>
+                Day</Button>
               <Button variant="contained" color="primary" onClick={() => handleButtonClick(3)}
                 classes={{
                   root:
@@ -82,7 +81,7 @@ const Header = ({ handleButtonClick, activeNav }) => {
                       ? ""
                       : classes.buttonRootUnselected,
                 }}>
-                5분</Button>
+                5 Minutes</Button>
             </Box>
           </Grid>
         </Grid>
