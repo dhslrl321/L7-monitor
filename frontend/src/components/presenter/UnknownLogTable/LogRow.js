@@ -9,7 +9,7 @@ const useStyles = makeStyles(componentStyles);
 
 const LogRow = ({ data }) => {
 
-  const { ip, timestamp, method, uri, resDataSize, referer } = data;
+  const { ip, data: uriData } = data;
   const classes = useStyles();
 
   return (
@@ -26,11 +26,8 @@ const LogRow = ({ data }) => {
         scope="row">
         {ip}
       </TableCell>
-      <TableCell>
-        {timestamp}
-      </TableCell>
       <TableCell classes={{ root: classes.tableCellRoot }}>
-        {uri}
+        {uriData}
       </TableCell>
     </TableRow>
   )

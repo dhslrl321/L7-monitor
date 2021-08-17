@@ -14,14 +14,14 @@ import InsertChartOutlined from "@material-ui/icons/InsertChartOutlined";
 import PieChart from "@material-ui/icons/PieChart";
 
 // core components
-import CardStats from "components/Summary/CardStats.js";
+import CardStats from "components/presenter/Summary/CardStats.js";
 import componentStyles from "assets/theme/components/header.js";
 
 
 
 const useStyles = makeStyles(componentStyles);
 
-const DrawSecurityLevel = () => {
+const SecurityLevel = () => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -75,4 +75,4 @@ const DrawSecurityLevel = () => {
   );
 };
 
-export default DrawSecurityLevel;
+export default SecurityLevel;

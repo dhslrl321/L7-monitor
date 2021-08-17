@@ -5,3 +5,9 @@ export const fetchAllLog = async () => {
 
   return data;
 }
+
+export const fetchUnknownLog = async () => {
+  const { data } = await TEST_SERVER.get("/logs/unknown");
+
+  return data;
+}
