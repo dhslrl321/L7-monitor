@@ -19,9 +19,10 @@ import Typography from "@material-ui/core/Typography";
 import {
   chartOptions,
   parseOptions,
-  chartExample1,
+  lineChart
 } from "variables/charts.js";
 
+import Header from "components/TrafficDashboard/Header";
 
 import componentStyles from "assets/theme/views/admin/dashboard.js";
 
@@ -45,7 +46,6 @@ const TrafficDashboard = () => {
   };
 
   return (
-
     <Grid
       item
       xs={12}
@@ -54,78 +54,13 @@ const TrafficDashboard = () => {
       marginBottom="3rem!important"
       classes={{ root: classes.gridItemRoot }}
     >
-      <Card
-        classes={{
-          root: classes.cardRoot + " " + classes.cardRootBgGradient,
-        }}
-      >
-        <CardHeader
-          subheader={
-            <Grid
-              container
-              component={Box}
-              alignItems="center"
-              justifyContent="space-between">
-              <Grid item xs="auto">
-                <Box
-                  component={Typography}
-                  variant="h6"
-                  letterSpacing=".0625rem"
-                  marginBottom=".25rem!important"
-                  className={classes.textUppercase}>
-                  <Box component="span" color={theme.palette.gray[400]}>
-                    Bori-BoB
-                  </Box>
-                </Box>
-                <Box
-                  component={Typography}
-                  variant="h2"
-                  marginBottom="0!important">
-                  <Box component="span" color={theme.palette.white.main}>
-                    오늘의 실시간 트래픽
-                        </Box>
-                </Box>
-              </Grid>
-              <Grid item xs="auto">
-                <Box
-                  justifyContent="flex-end"
-                  display="flex"
-                  flexWrap="wrap"
-                >
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    component={Box}
-                    marginRight="1rem!important"
-                    onClick={() => toggleNavs(1)}
-                    classes={{
-                      root:
-                        activeNav === 1
-                          ? ""
-                          : classes.buttonRootUnselected,
-                    }}
-                  >
-                    Day
-                        </Button>
-                  <Button variant="contained" color="primary" onClick={() => toggleNavs(2)}
-                    classes={{
-                      root:
-                        activeNav === 2
-                          ? ""
-                          : classes.buttonRootUnselected,
-                    }}>
-                    Week</Button>
-                </Box>
-              </Grid>
-            </Grid>
-          }
-          classes={{ root: classes.cardHeaderRoot }}
-        ></CardHeader>
+      <Card classes={{ root: classes.cardRoot + " " + classes.cardRootBgGradient }}>
+        <Header handleButtonClick={toggleNavs} activeNav={activeNav} />
         <CardContent>
           <Box position="relative" height="350px">
             <Line
-              data={chartExample1[chartExample1Data]}
-              options={chartExample1.options}
+              data={chartData[chartExample1Data]}
+              options={lineChart.options}
               getDatasetAtEvent={(e) => console.log(e)}
             />
           </Box>
@@ -135,4 +70,40 @@ const TrafficDashboard = () => {
   )
 }
 
-export default TrafficDashboard
+export default TrafficDashboard;
+
+const chartData = {
+  data1: () => {
+    return {
+      labels: ["00", "01", "02", "03", "04", "05", "07"],
+      datasets: [
+        {
+          data: [5210, 4120, 6614, 3381, 8115, 6721, 5344],
+        },
+      ],
+    };
+  },
+
+
+  data2: () => {
+    return {
+      labels: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
+      datasets: [
+        {
+          data: [611, 210, 512, 150, 281, 270, 56],
+        },
+      ],
+    };
+  },
+
+  data3: () => {
+    return {
+      labels: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
+      datasets: [
+        {
+          data: [12, 16, 21, 13, 23, 35, 16],
+        },
+      ],
+    }
+  }
+}
