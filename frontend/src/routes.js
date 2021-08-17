@@ -7,6 +7,12 @@ const routes = [
     name: "Dashboard",
     iconColor: "Primary",
     component: Dashboard,
+  },
+  {
+    path: "/app",
+    name: "App",
+    iconColor: "Primary",
+    component: Dashboard,
   }
 ];
 

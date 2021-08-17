@@ -11,11 +11,13 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/scss/argon-dashboard-react.scss";
 
 import Dashboard from "components/Dashboard"
+import App from "components/App";
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
     <CssBaseline />
     <Dashboard />
+    <App />
   </ThemeProvider>,
   document.querySelector("#root")
 );

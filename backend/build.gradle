@@ -25,8 +25,8 @@ dependencies {
 
     // jpa & h2 db & p6spy
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    // runtimeOnly 'com.h2database:h2'
-    implementation 'mysql:mysql-connector-java'
+    implementation group: 'com.h2database', name: 'h2', version: '1.4.199'
+    // implementation 'mysql:mysql-connector-java'
     // implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
 
     // model mapper
