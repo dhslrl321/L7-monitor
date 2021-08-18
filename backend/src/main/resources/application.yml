@@ -19,6 +19,6 @@ spring:
       ddl-auto: update
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://bori-db-container:3306/bob_l7?characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/bob_l7?characterEncoding=utf8?serverTimezone=Asia/Seoul
     username: root
-    password: root
+    password: 1111

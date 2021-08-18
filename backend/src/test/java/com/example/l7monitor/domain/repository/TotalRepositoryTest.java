@@ -45,11 +45,11 @@ class TotalRepositoryTest {
     void countByTimestampBetween_success() {
 
         LocalDateTime from = LocalDateTime.of(LocalDate.now(), LocalTime.now().minusMinutes(10)); // 현재 시간 -10 분
-        LocalDateTime to = LocalDateTime.of(LocalDate.now(), LocalTime.now().minusMinutes(5)); // 현재 시간 -5 분
+        LocalDateTime to = LocalDateTime.now(); // 현재 시간 -5 분
 
         long count = totalRepository.countByTimestampBetween(from, to);
 
-        assertEquals(3, count);
+        assertEquals(4, count);
     }
 
     @Test
