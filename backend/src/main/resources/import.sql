@@ -1,4 +1,4 @@
-insert into mal_code values (1, 'SQL-Injection');
+/*insert into mal_code values (1, 'SQL-Injection');
 insert into mal_code values (2, 'Web-Shell');
 insert into mal_code values (3, 'RFI');
 insert into mal_code values (4, 'XSS');
@@ -89,4 +89,4 @@ insert into unknown_log(ip, data) values ('192.168.0.1', '/method, HTTP1.1 200, 
 insert into unknown_log(ip, data) values ('192.168.0.1', '/method, HTTP1.1 200, 14');
 insert into unknown_log(ip, data) values ('192.168.0.1', '/method, HTTP1.1 200, 14');
 insert into unknown_log(ip, data) values ('192.168.0.1', '/method, HTTP1.1 200, 14');
-insert into unknown_log(ip, data) values ('192.168.0.1', '/method, HTTP1.1 200, 14');
+insert into unknown_log(ip, data) values ('192.168.0.1', '/method, HTTP1.1 200, 14');*/

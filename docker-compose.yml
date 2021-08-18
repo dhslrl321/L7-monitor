@@ -14,7 +14,7 @@ services:
       - "8080:8080"
 
   db:
-    container_name: bori-db-container
+    container_name: lauvsong/bori-db:210815
     image: mysql:5.7
     restart: always
     ports:
@@ -23,11 +23,6 @@ services:
       - MYSQL_DATABASE=boridb
       - MYSQL_ROOT_PASSWORD=root
       - TZ=Asia/Seoul
-    command:
-      - --character-set-server=utf8md4
-      - --collation-server=utf8md4_unicode_ci
-    volumes:
-      - /home/boribob-l7-db:/var/lib/mysql
 
   proxy:
     image: dhslrl321/boribob-l7:proxy
