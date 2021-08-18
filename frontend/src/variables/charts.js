@@ -322,36 +322,3 @@ let lineChart = {
     },
   }
 };
-
-
-
-
-// above code, pie chart 
-var xValues = ["SQL-Injection", "Web-Shell", "RFI", "XSS"];
-var yValues = [55, 49, 44, 24];
-var barColors = ["red", "green", "blue", "orange"];
-
-
-// Example 2 of Chart inside src/views/Index.js (Total orders - Card)
-let chartExample2 = {
-  data: {
-    labels: xValues,
-    datasets: [{
-      backgroundColor: barColors,
-      data: yValues
-    }]
-  },
-  options: {
-    title: {
-      display: true,
-    }
-  }
-};
-
-module.exports = {
-  chartOptions,
-  parseOptions,
-  lineChart,
-  chartExample2,
-};
-
