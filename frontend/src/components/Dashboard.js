@@ -7,12 +7,7 @@ import Container from "@material-ui/core/Container";
 
 import Grid from "@material-ui/core/Grid";
 
-// core components
-// todo 지금은 presenter 를 import 하지만 추후에 container 를 import 해야 함
 import Summary from "components/presenter/Summary/index";
-import ThreatChart from "components/presenter/ThreatChart/index";
-import UnknownLogTable from "components/presenter/UnknownLogTable/index";
-import TrafficDashboard from "components/presenter/TrafficDashboard/index";
 
 // container
 import LogTableContainer from "components/container/LogTableContainer";
