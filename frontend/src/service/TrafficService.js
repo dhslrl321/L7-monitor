@@ -1,5 +1,11 @@
 import { TEST_SERVER } from "util/SERVER";
 
+
+export const fetchSummary = async () => {
+  const { data } = await TEST_SERVER.get("/traffics/summaries");
+  return data;
+}
+
 export const fetchRealtimeTrafficsFiveMinutes = async () => {
   const { data } = await TEST_SERVER.get("/traffics/five_minute");
   return data;
