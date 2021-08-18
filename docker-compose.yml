@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  front:
+    container_name: front-container
+    image: dhslrl321/boribob-l7:front
+    ports:
+      - "3000:3000"
+
+  back:
+    container_name: back-container
+    image: dhslrl321/boribob-l7:back
+    ports:
+      - "8080:8080"
+
+  db:
+    container_name: bori-db-container
+    image: mysql:5.7
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=boridb
+      - MYSQL_ROOT_PASSWORD=root
+      - TZ=Asia/Seoul
+    command:
+      - --character-set-server=utf8md4
+      - --collation-server=utf8md4_unicode_ci
+    volumes:
+      - /home/boribob-l7-db:/var/lib/mysql
+
+  proxy:
+    image: dhslrl321/boribob-l7:proxy
+    ports:
+      - "80:80"
+    depends_on:
+      - front
+      - back
