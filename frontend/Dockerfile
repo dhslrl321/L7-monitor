@@ -10,4 +10,8 @@ RUN npm install -g gulp
 
 COPY . .
 
-CMD ["npm", "run", "build"]
+RUN npm run build
+
+EXPOSE 5000
+
+CMD ["npx", "serve", "-s", "build"]
