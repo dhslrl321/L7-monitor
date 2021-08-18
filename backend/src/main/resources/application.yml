@@ -22,6 +22,3 @@ spring:
     url: jdbc:mysql://bori-db-container:3306/bob_l7?characterEncoding=utf8
     username: root
     password: root
-logging.level:
-  org.hibernate.SQL: debug
-  #org.hibernate.type: trace

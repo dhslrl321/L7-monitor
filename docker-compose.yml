@@ -14,8 +14,8 @@ services:
       - "8080:8080"
 
   db:
-    container_name: lauvsong/bori-db:210815
-    image: mysql:5.7
+    container_name: bori-db-container
+    image: lauvsong/bori-db:210815
     restart: always
     ports:
       - "3306:3306"
