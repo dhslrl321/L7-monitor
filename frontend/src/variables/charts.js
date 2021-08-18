@@ -322,3 +322,11 @@ let lineChart = {
     },
   }
 };
+
+
+module.exports = {
+  chartOptions,
+  parseOptions,
+  lineChart,
+};
+
