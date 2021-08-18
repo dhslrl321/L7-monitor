@@ -1,7 +1,7 @@
-import { TEST_SERVER } from "util/SERVER";
+import { TEST_SERVER, SERVER } from "util/SERVER";
 
 export const fetchThreatsCount = async () => {
-  const { data } = await TEST_SERVER.get("/threats");
+  const { data } = await SERVER.get("/threats");
 
   return data;
 }
