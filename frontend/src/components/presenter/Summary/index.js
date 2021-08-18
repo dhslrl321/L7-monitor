@@ -13,15 +13,20 @@ import componentStyles from "assets/theme/components/header.js";
 
 // import each functions
 import SecurityLevel from "components/presenter/Summary/SecurityLevel";
-import ThreatTraffic from "components/presenter/Summary/ThreatSummary"
-import TotalSummary from "components/presenter/Summary/TotalSummary"
+import ThreatTraffic from "components/presenter/Summary/ThreatSummary";
+import TotalSummary from "components/presenter/Summary/TotalSummary";
 
 
 const useStyles = makeStyles(componentStyles);
 
-const Header = () => {
+const Summary = ({summaryData}) => {
   const classes = useStyles();
   const theme = useTheme();
+
+  const {count: totalCount, timestamp: totalTimestamp} = summaryData.totalTraffic;
+  const {count: abnormalCount, timestamp: abnormalTimestamp} = summaryData.abnormalTraffic;
+  const {level, description, ratio} = summaryData.securityLevel;
+
 
   return (
     <>
@@ -34,9 +39,9 @@ const Header = () => {
           <div>
             <Grid container>
 
-              <TotalSummary />
-              <ThreatTraffic />
-              <SecurityLevel />
+              <TotalSummary totalCount={totalCount} totalTimestamp={totalTimestamp}/>
+              <ThreatTraffic abnormalCount={abnormalCount} abnormalTimestamp={abnormalTimestamp}/>
+              <SecurityLevel level={level} description={description} ratio={ratio}/>
 
             </Grid>
           </div>
@@ -46,4 +51,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Summary;

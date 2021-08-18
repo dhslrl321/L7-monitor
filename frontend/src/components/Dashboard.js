@@ -19,6 +19,7 @@ import LogTableContainer from "components/container/LogTableContainer";
 import ThreatChartContainer from "components/container/ThreatChartContainer";
 import TrafficDashboardContainer from "components/container/TrafficDashboardContainer";
 import UnknownLogTableContainer from "components/container/UnknownLogTableContainer";
+import SummaryContainer from "components/container/SummaryContainer";
 
 import componentStyles from "assets/theme/views/admin/dashboard.js";
 
@@ -28,7 +29,7 @@ function Dashboard() {
   const classes = useStyles();
   return (
     <>
-      <Summary />
+      <SummaryContainer />
       <Container
         maxWidth={false}
         component={Box}
