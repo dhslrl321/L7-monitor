@@ -7,66 +7,66 @@ import { fetchRealtimeTrafficsFiveMinutes, fetchRealtimeTrafficsDays, fetchRealt
 const TrafficDashboardContainer = () => {
 
   const [activeNav, setActiveNav] = useState(1);
-  const [chartResponseData, setChartResponseData] = useState({});
-  const [chartData, setChartData] = useState();
+  const [chartResponseData, setChartResponseData] = useState([]);
+  const [chartData, setChartData] = useState({});
 
   const toggleNav = (index) => {
     setActiveNav(index);
 
-    if (index === 1) {
+    const arrIndex = index - 1;
 
-    }
-  }
+    const array = chartResponseData[arrIndex];
+
+    let labels = [];
+    let datas = [];
+
+    array.map(iter => {
+      const { timestamp, count } = iter;
+      if (arrIndex === 0 || arrIndex === 1) {
+        const parsedTimestamp = timestamp.substring(0, 10);
+        labels.push(parsedTimestamp);
+      } else {
+        const parsedTimestamp = timestamp.substring(11, 19);
+        labels.push(parsedTimestamp);
+      }
+
+      datas.push(count);
+    });
+
+    setChartData({
+      labels: labels.reverse(),
+      datasets: [{ data: datas.reverse() }],
+    });
+  };
 
   useEffect(async () => {
-    const fiveMinutesData = await fetchRealtimeTrafficsFiveMinutes();
-    const dayData = await fetchRealtimeTrafficsDays();
-    const weekData = await fetchRealtimeTrafficsWeeks();
+    const fiveMinutes = await fetchRealtimeTrafficsFiveMinutes();
+    const day = await fetchRealtimeTrafficsDays();
+    const week = await fetchRealtimeTrafficsWeeks();
 
-    setChartResponseData({
-      fiveMinutesData,
-      dayData,
-      weekData
+    setChartResponseData([
+      week,
+      day,
+      fiveMinutes,
+    ]);
+
+    let labels = [];
+    let datas = [];
+
+    week.map(iter => {
+      const { timestamp, count } = iter;
+      const parsedTimestamp = timestamp.substring(0, 10);
+      labels.push(parsedTimestamp);
+      datas.push(count);
     });
-  }, [])
+
+    setChartData({
+      labels: labels.reverse(),
+      datasets: [{ data: datas.reverse() }],
+    });
+  }, []);
 
   return <TrafficDashboard activeNav={activeNav} chartData={chartData} toggleNav={toggleNav} />
 }
 
 export default TrafficDashboardContainer
-
-const chartData = {
-  data1: () => {
-    return {
-      labels: ["00", "01", "02", "03", "04", "05", "07"],
-      datasets: [
-        {
-          data: [5210, 4120, 6614, 3381, 8115, 6721, 5344],
-        },
-      ],
-    };
-  },
-
-
-  data2: () => {
-    return {
-      labels: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
-      datasets: [
-        {
-          data: [611, 210, 512, 150, 281, 270, 56],
-        },
-      ],
-    };
-  },
-
-  data3: () => {
-    return {
-      labels: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
-      datasets: [
-        {
-          data: [12, 16, 21, 13, 23, 35, 16],
-        },
-      ],
-    }
-  }
-}

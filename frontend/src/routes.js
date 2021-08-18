@@ -8,12 +8,6 @@ const routes = [
     iconColor: "Primary",
     component: Dashboard,
   },
-  {
-    path: "/app",
-    name: "App",
-    iconColor: "Primary",
-    component: Dashboard,
-  }
 ];
 
 export default routes;

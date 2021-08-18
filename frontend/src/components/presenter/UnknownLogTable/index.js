@@ -16,8 +16,6 @@ import componentStyles from "assets/theme/views/admin/dashboard.js";
 import Field from "components/presenter/UnknownLogTable/Field";
 import LogRow from "components/presenter/UnknownLogTable/LogRow";
 
-import { fetchUnknownLog } from "service/LogService";
-
 const useStyles = makeStyles(componentStyles);
 
 const UnknownLogTable = ({ logDatas }) => {
