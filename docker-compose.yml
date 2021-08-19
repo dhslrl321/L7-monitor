@@ -20,11 +20,11 @@ services:
 
   back:
     container_name: back-container
-    image: dhslrl321/boribob-l7:back
+    image: dhslrl321/boribob-l7:backend
     ports:
       - "8080:8080"
     environment:
-      - "spring.datasource.url=jdbc:mysql://bori-db-container/bob_l7?characterEncoding=utf8?serverTimezone=Asia/Seoul
+      - "spring.datasource.url=jdbc:mysql://bori-db-container/bob_l7?characterEncoding=utf8&serverTimezone=Asia/Seoul"
     depends_on:
       - db
 
