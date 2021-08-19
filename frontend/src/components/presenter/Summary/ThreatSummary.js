@@ -14,10 +14,8 @@ import componentStyles from "assets/theme/components/header.js";
 
 const useStyles = makeStyles(componentStyles);
 
-const ThreatSummary = ({abnormalCount, abnormalTimestamp}) => {
-  const classes = useStyles();
+const ThreatSummary = ({ abnormalCount, abnormalTimestamp }) => {
   const theme = useTheme();
-
   return (
     <>
       <Grid item xl={4} lg={6} xs={12}>
@@ -37,10 +35,7 @@ const ThreatSummary = ({abnormalCount, abnormalTimestamp}) => {
                 alignItems="center"
               >
                 <Box />{" "}
-                {abnormalTimestamp+"\n"}
-              </Box>
-              <Box component="span" whiteSpace="nowrap">              
-              오늘 하루동안 들어온 보안 위협 트래픽을 보여줍니다. 하루를 기준으로 00:00:00 ~ 23:59:59 사이의 트래픽 
+                {abnormalTimestamp + "\n"}
               </Box>
             </>
           }

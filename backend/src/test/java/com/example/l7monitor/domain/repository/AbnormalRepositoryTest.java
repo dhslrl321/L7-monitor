@@ -23,10 +23,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class AbnormalRepositoryTest {
 
     private static final LocalDateTime[] times = {
-            LocalDateTime.of(LocalDate.now(), LocalTime.now().minusMinutes(6L)),
-            LocalDateTime.of(LocalDate.now(), LocalTime.now().minusMinutes(7L)),
-            LocalDateTime.of(LocalDate.now(), LocalTime.now().minusMinutes(8L)),
-            LocalDateTime.of(LocalDate.now(), LocalTime.now().minusMinutes(66L)),
+            LocalDateTime.now().minusMinutes(5L),
+            LocalDateTime.now().minusMinutes(6L),
+            LocalDateTime.now().minusMinutes(7L),
+            LocalDateTime.now().minusMinutes(8L),
             LocalDateTime.of(LocalDate.now().minusDays(7L), LocalTime.now())
     };
 
@@ -54,7 +54,7 @@ class AbnormalRepositoryTest {
     @DisplayName("특정 시간대 내에 존재하는 비정상 로그 개수 확인 - 성공")
     void countByTimestamp_valid() {
 
-        LocalDateTime from = LocalDateTime.of(LocalDate.now(), LocalTime.now().minusMinutes(70));
+        LocalDateTime from = LocalDateTime.now().minusMinutes(9L);
         LocalDateTime to = LocalDateTime.now();
 
         long count = abnormalRepository.countByTimestampBetween(from, to);
@@ -68,7 +68,7 @@ class AbnormalRepositoryTest {
         long count = abnormalRepository.countByMalCodeCodeAndTimestampBetween(
                 1, LocalDateTime.now().minusDays(14L), LocalDateTime.now());
 
-        assertEquals(35, count);
+        assertEquals(20, count);
     }
 
     private static void generateAbnormalLogData(JpaRepository abnormalRepository, int sequenceNumber) {

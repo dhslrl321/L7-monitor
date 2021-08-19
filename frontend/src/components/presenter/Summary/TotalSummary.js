@@ -15,7 +15,7 @@ import CardStats from "components/presenter/Summary/CardStats.js";
 
 
 
-const TotalSummary = ({totalCount, totalTimestamp}) => {
+const TotalSummary = ({ totalCount, totalTimestamp }) => {
 
   const theme = useTheme();
 
@@ -41,9 +41,6 @@ const TotalSummary = ({totalCount, totalTimestamp}) => {
                 <Box />
                 {totalTimestamp}
               </Box>
-              <Box component="span" whiteSpace="nowrap">
-               오늘 하루동안 들어온 총 트래픽을 보여줍니다. 하루를 기준으로 00:00:00 ~ 23:59:59 사이의 트래픽 
-                      </Box>
             </>
           }
         />
