@@ -1,0 +1,61 @@
+# Docker Image
+
+- [도커 허브 Repository](https://hub.docker.com/repository/docker/dhslrl321/boribob-l7)
+  - front image pull
+    - `docker pull dhslrl321/boribob-l7:frontend
+  - back image pull
+    - `docker pull dhslrl321/boribob-l7:backend
+  - nginx image pull
+    - `docker pull dhslrl321/boribob-l7:proxy
+  - db image pull
+    - `docker pull lauvsong/bori-db:210815
+
+> 근데 docker-compose 를 쓰면 직접 도커 이미지를 내려받을 필요 없음
+
+# Infra
+
+- Frontend
+  - 5000 port
+- Backend
+  - 8080 port
+- DB
+  - 3306 port
+- Reverse Proxy
+  - 80 port
+
+# 실행 전 준비
+
+- docker 설치하기
+  - `apt install -y docker.io`
+- docker-compose 설치하기
+  - `apt install -y docker-compose`
+
+# 실행 순서
+
+실행 방법은 2가지가 있음
+
+1. github 에 있는 docker-compose.yml 내용을 복사해서 vm2에 만들어주는 방법
+2. git clone 해서 실행하는 방법
+
+### github 에 있는 docker-compose.yml 내용을 복사해서 vm2에 만들어주는 방법
+
+1. vm2 에서 `docker-compose.yml` 을 생성한다.
+2. [l7-monitor docker-compose](https://github.com/BORI-BoB/L7-monitor/blob/develop/docker-compose.yml) 를 복사한다.
+3. vm2 에서 생성한 `docker-compose.yml` 에 해당 내용을 복사한다.
+4. `docker-compose up -d` 를 수행한다.
+
+### git clone 해서 실행하는 방법
+
+1. vm2 에서 `git clone https://github.com/.../.git` 을 수행한다.
+2. 해당 디렉토리로 이동해서 `docker-compose up -d` 를 수행한다
+
+```bash
+❯ docker-compose up -d
+
+Creating front-container   ... done
+Creating bori-db-container ... done
+Creating back-container    ... done
+Creating bori-bob_proxy_1  ... done
+```
+
+뜨면 성공
