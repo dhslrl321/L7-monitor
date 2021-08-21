@@ -7,10 +7,6 @@ services:
     restart: always
     ports:
       - "3306:3306"
-    environment:
-      - MYSQL_DATABASE=boridb
-      - MYSQL_ROOT_PASSWORD=root
-      - TZ=Asia/Seoul
 
   front:
     container_name: front-container
