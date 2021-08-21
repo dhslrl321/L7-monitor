@@ -22,11 +22,9 @@ services:
 
   back:
     container_name: back-container
-    build:
-      context: ./backend
-      args:
-        HOST_IP: 172.17.0.1
-    image: l7-backend
+    image: dhslrl321/boribob-l7:backend
+    environment:
+      HOST_IP: 172.17.0.1
     depends_on:
       - db
 
@@ -35,6 +33,7 @@ services:
     build:
       context: ./reverse-proxy
     image: reverse-proxy
+
     ports:
       - "80:80"
     depends_on:
