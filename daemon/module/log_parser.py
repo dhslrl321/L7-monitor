@@ -41,7 +41,7 @@ def convert_timezone(date, timezone):
     utc = datetime.datetime.strptime(date, '%d/%b/%Y:%H:%M:%S')
     
     timezone = datetime.timedelta(hours=timezone)
-    result = utc
+    result = utc + timezone
 
     return result.strftime('%Y-%m-%d %H:%M:%S')
 
