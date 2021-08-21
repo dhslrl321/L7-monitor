@@ -1,3 +1,6 @@
+boribob:
+  host-ip: 192.168.0.2:3000
+
 spring:
   # H2 콘솔 설정
 #  h2:

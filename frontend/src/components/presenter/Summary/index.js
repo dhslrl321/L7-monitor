@@ -12,20 +12,20 @@ import Grid from "@material-ui/core/Grid";
 import componentStyles from "assets/theme/components/header.js";
 
 // import each functions
-import SecurityLevel from "components/presenter/Summary/SecurityLevel";
 import ThreatTraffic from "components/presenter/Summary/ThreatSummary";
 import TotalSummary from "components/presenter/Summary/TotalSummary";
+import SecurityLevel from "components/presenter/Summary/SecurityLevel";
 
 
 const useStyles = makeStyles(componentStyles);
 
-const Summary = ({summaryData}) => {
+const Summary = ({ summaryData }) => {
   const classes = useStyles();
   const theme = useTheme();
 
-  const {count: totalCount, timestamp: totalTimestamp} = summaryData.totalTraffic;
-  const {count: abnormalCount, timestamp: abnormalTimestamp} = summaryData.abnormalTraffic;
-  const {level, description, ratio} = summaryData.securityLevel;
+  const { count: totalCount, timestamp: totalTimestamp } = summaryData.totalTraffic;
+  const { count: abnormalCount, timestamp: abnormalTimestamp } = summaryData.abnormalTraffic;
+  const { level, description, ratio } = summaryData.securityLevel;
 
 
   return (
@@ -39,9 +39,9 @@ const Summary = ({summaryData}) => {
           <div>
             <Grid container>
 
-              <TotalSummary totalCount={totalCount} totalTimestamp={totalTimestamp}/>
-              <ThreatTraffic abnormalCount={abnormalCount} abnormalTimestamp={abnormalTimestamp}/>
-              <SecurityLevel level={level} description={description} ratio={ratio}/>
+              <TotalSummary totalCount={totalCount} totalTimestamp={totalTimestamp} />
+              <ThreatTraffic abnormalCount={abnormalCount} abnormalTimestamp={abnormalTimestamp} />
+              <SecurityLevel level={level} description={description} ratio={ratio} />
 
             </Grid>
           </div>

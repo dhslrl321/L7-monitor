@@ -3,7 +3,7 @@ version: "3"
 services:
   db:
     container_name: bori-db-container
-    image: lauvsong/bori-db:210815
+    image: lauvsong/bori-db:210821
     restart: always
     ports:
       - "3306:3306"
@@ -14,22 +14,28 @@ services:
 
   front:
     container_name: front-container
-    image: dhslrl321/boribob-l7:frontend
-    ports:
-      - "5000:5000"
+    build:
+      context: ./frontend
+      args:
+        REACT_APP_HOST_IP: 172.17.0.1
+    image: l7-frontend
 
   back:
     container_name: back-container
+    build:
+      context: ./backend
+      args:
+        HOST_IP: 172.17.0.1
     image: dhslrl321/boribob-l7:backend
-    ports:
-      - "8080:8080"
-    environment:
-      - "spring.datasource.url=jdbc:mysql://bori-db-container/bob_l7?characterEncoding=utf8&serverTimezone=Asia/Seoul"
     depends_on:
       - db
 
   proxy:
-    image: dhslrl321/boribob-l7:proxy
+    container_name: proxy-container
+    build:
+      context: ./reverse-proxy
+    image: reverse-proxy
+
     ports:
       - "80:80"
     depends_on:

@@ -64,3 +64,4 @@ Creating bori-bob_proxy_1  ... done
 
 - 프론트 접속 : `http://vm2-ip/`
 - 백엔드 API : `http://vm2-ip/api`
+- db : `mysql:vm2-ip:3306`
