@@ -14,17 +14,19 @@ services:
 
   front:
     container_name: front-container
-    image: dhslrl321/boribob-l7:frontend
-    ports:
-      - "5000:5000"
+    build:
+      context: ./frontend
+      args:
+        REACT_APP_HOST_IP: 172.17.0.1
+    image: l7-frontend
 
   back:
     container_name: back-container
-    image: dhslrl321/boribob-l7:backend
-    ports:
-      - "8080:8080"
-    environment:
-      - "spring.datasource.url=jdbc:mysql://bori-db-container/bob_l7?characterEncoding=utf8&serverTimezone=Asia/Seoul"
+    build:
+      context: ./backend
+      args:
+        HOST_IP: 172.17.0.1
+    image: l7-backend
     depends_on:
       - db
 
