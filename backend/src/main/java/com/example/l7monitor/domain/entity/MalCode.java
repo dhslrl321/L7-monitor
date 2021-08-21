@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Getter @Setter @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "mal_code")
 public class MalCode {
     @Id
     private Integer code;

@@ -26,6 +26,6 @@ public class Abnormal {
     private String userAgent;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mal_code_code")
+    @JoinColumn(name = "mal_code")
     private MalCode malCode;
 }
