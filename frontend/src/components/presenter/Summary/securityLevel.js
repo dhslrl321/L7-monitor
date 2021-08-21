@@ -12,7 +12,7 @@ import EmojiEvents from "@material-ui/icons/EmojiEvents";
 import CardStats from "components/presenter/Summary/CardStats.js";
 
 
-const SecurityLevel = ({level, description, ratio}) => {
+const SecurityLevel = ({ level, description, ratio }) => {
 
   const theme = useTheme();
 

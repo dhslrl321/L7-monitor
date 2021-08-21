@@ -31,7 +31,9 @@ services:
       - db
 
   proxy:
-    image: dhslrl321/boribob-l7:proxy
+    build:
+      context: ./reverse-proxy
+    image: reverse-proxy
     ports:
       - "80:80"
     depends_on:
