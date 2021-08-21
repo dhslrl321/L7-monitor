@@ -21,6 +21,8 @@ class Agent(object):
     def sendline(self, line):
         print(line)
         self.socket.send(line.encode())
+        msg = self.socket.recv(2048)
+        print(msg.decode())
 
 
 if __name__ == "__main__":

@@ -24,9 +24,6 @@ const Field = () => {
         IP
       </TableCell>
       <TableCell classes={rootClasses} >
-        Timestamp
-      </TableCell>
-      <TableCell classes={rootClasses} >
         Data
       </TableCell>
     </>

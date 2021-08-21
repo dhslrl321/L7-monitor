@@ -7,7 +7,7 @@ const routes = [
     name: "Dashboard",
     iconColor: "Primary",
     component: Dashboard,
-  }
+  },
 ];
 
 export default routes;

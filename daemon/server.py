@@ -37,5 +37,6 @@ if __name__ == "__main__":
             f.close()
             print(msg)
             lp.parse_normal(conn, cursor, "tmp.txt")
+            connectionSocket.send("OK".encode())
             
     

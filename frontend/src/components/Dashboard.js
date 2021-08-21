@@ -4,14 +4,17 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
+
 import Grid from "@material-ui/core/Grid";
 
-// core components
-import Summary from "components/Summary/index";
-import ThreatChart from "components/ThreatChart/index";
-import UnknownLogTable from "components/UnknownLogTable/index";
-import LogTable from "components/LogTable/index";
-import TrafficDashboard from "components/TrafficDashboard/index";
+import Summary from "components/presenter/Summary/index";
+
+// container
+import LogTableContainer from "components/container/LogTableContainer";
+import ThreatChartContainer from "components/container/ThreatChartContainer";
+import TrafficDashboardContainer from "components/container/TrafficDashboardContainer";
+import UnknownLogTableContainer from "components/container/UnknownLogTableContainer";
+import SummaryContainer from "components/container/SummaryContainer";
 
 import componentStyles from "assets/theme/views/admin/dashboard.js";
 
@@ -21,7 +24,7 @@ function Dashboard() {
   const classes = useStyles();
   return (
     <>
-      <Summary />
+      <SummaryContainer />
       <Container
         maxWidth={false}
         component={Box}
@@ -29,13 +32,13 @@ function Dashboard() {
         classes={{ root: classes.containerRoot }}>
 
         <Grid container>
-          <TrafficDashboard />
+          <TrafficDashboardContainer />
         </Grid>
 
         <Grid container component={Box} marginTop="3rem">
-          <LogTable />
-          <UnknownLogTable />
-          <ThreatChart />
+          <LogTableContainer />
+          <UnknownLogTableContainer />
+          <ThreatChartContainer />
         </Grid>
       </Container>
     </>

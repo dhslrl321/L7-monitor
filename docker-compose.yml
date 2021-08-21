@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  db:
+    container_name: bori-db-container
+    image: lauvsong/bori-db:210821
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=boridb
+      - MYSQL_ROOT_PASSWORD=root
+      - TZ=Asia/Seoul
+
+  front:
+    container_name: front-container
+    build:
+      context: ./frontend
+      args:
+        REACT_APP_HOST_IP: 172.17.0.1
+    image: l7-frontend
+
+  back:
+    container_name: back-container
+    build:
+      context: ./backend
+      args:
+        HOST_IP: 172.17.0.1
+    image: dhslrl321/boribob-l7:backend
+    depends_on:
+      - db
+
+  proxy:
+    container_name: proxy-container
+    build:
+      context: ./reverse-proxy
+    image: reverse-proxy
+
+    ports:
+      - "80:80"
+    depends_on:
+      - front
+      - back

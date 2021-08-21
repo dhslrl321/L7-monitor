@@ -1,3 +1,6 @@
+boribob:
+  host-ip: 192.168.0.2:3000
+
 spring:
   # H2 콘솔 설정
 #  h2:
@@ -11,17 +14,14 @@ spring:
 #    driver-class-name: org.h2.Driver
 #    url: jdbc:h2:mem:l7-monitor
 #    username: l7
-#    password: bob-l7
-
-  # jpa 설정
+#    password:
+#
+#  # jpa 설정
 #  jpa:
 #    hibernate:
-#      ddl-auto: create-drop
+#      ddl-auto: update
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/bob_l7?characterEncoding=utf8
     username: root
     password: 1111
-logging.level:
-  org.hibernate.SQL: debug
-  #org.hibernate.type: trace
