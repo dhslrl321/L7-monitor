@@ -40,8 +40,8 @@ public class ThreatService {
 
         return ThreatLogCountResponse.builder()
                 .sqli(threatResponses[0])
-                .rfi(threatResponses[1])
-                .wshell(threatResponses[2])
+                .wshell(threatResponses[1])
+                .rfi(threatResponses[2])
                 .xss(threatResponses[3])
                 .build();
     }
