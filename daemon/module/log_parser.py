@@ -89,6 +89,9 @@ def parse_normal(conn, cursor, path):
             finally:
                 table_name = db.get_table(obj)
                 db.insert(conn, cursor, table_name, obj)
+                if table_name == "abnormal":
+                    del obj['mal_code']
+                    db.insert(conn, cursor, "total", obj)
                 conn.commit()
 
 
@@ -121,4 +124,7 @@ def parse_ssl(conn, cursor, path):
             finally:
                 table_name = db.get_table(obj)
                 db.insert(conn, cursor, table_name, obj)
+                if table_name == "abnormal":
+                    del obj['mal_code']
+                    db.insert(conn, cursor, "total", obj)
                 conn.commit()
