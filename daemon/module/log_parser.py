@@ -41,7 +41,7 @@ def convert_timezone(date, timezone):
     utc = datetime.datetime.strptime(date, '%d/%b/%Y:%H:%M:%S')
     
     timezone = datetime.timedelta(hours=timezone)
-    result = utc + timezone
+    result = utc
 
     return result.strftime('%Y-%m-%d %H:%M:%S')
 
@@ -89,6 +89,9 @@ def parse_normal(conn, cursor, path):
             finally:
                 table_name = db.get_table(obj)
                 db.insert(conn, cursor, table_name, obj)
+
+                if table_name == "abnormal":
+                    db.insert(conn, cursor, "total", obj)
                 conn.commit()
 
 
@@ -121,4 +124,7 @@ def parse_ssl(conn, cursor, path):
             finally:
                 table_name = db.get_table(obj)
                 db.insert(conn, cursor, table_name, obj)
+
+                if table_name == "abnormal":
+                    db.insert(conn, cursor, "total", obj)
                 conn.commit()
