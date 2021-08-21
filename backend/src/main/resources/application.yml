@@ -15,13 +15,13 @@ spring:
 #    url: jdbc:h2:mem:l7-monitor
 #    username: l7
 #    password:
-
-  # jpa 설정
+#
+#  # jpa 설정
 #  jpa:
 #    hibernate:
 #      ddl-auto: update
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/bob_l7?characterEncoding=utf8&autoReconnect=true&serverTimezone=KST
+    url: jdbc:mysql://localhost:3306/bob_l7?characterEncoding=utf8
     username: root
     password: 1111
