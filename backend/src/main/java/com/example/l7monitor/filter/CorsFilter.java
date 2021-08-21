@@ -14,7 +14,7 @@ import java.io.IOException;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorsFilter implements Filter {
 
-    @Value("${boribob.host-ip")
+    @Value("${boribob.host-ip}docker")
     private String HOST_IP;
 
     @Override

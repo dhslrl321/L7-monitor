@@ -31,6 +31,7 @@ services:
       - db
 
   proxy:
+    container_name: proxy-container
     build:
       context: ./reverse-proxy
     image: reverse-proxy
