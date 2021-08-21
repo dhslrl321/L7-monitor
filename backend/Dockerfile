@@ -11,6 +11,5 @@ COPY ./build/libs/L7-Monitor-0.0.1-SNAPSHOT.jar l7-monitor.jar
 ARG HOST_IP
 
 ENV HOST_IP=${HOST_IP}
-ENV DB_ENV="--spring.datasource.url=jdbc:mysql://bori-db-container/bob_l7?characterEncoding=utf8&serverTimezone=Asia/Seoul"
 
-ENTRYPOINT ["java", "-jar", "l7-monitor.jar", "$DB_ENV", "--boribob.host-ip=$HOST_IP"]
+ENTRYPOINT ["java", "-jar", "l7-monitor.jar", "--spring.datasource.url=jdbc:mysql://bori-db-container/bob_l7?characterEncoding=utf8&serverTimezone=Asia/Seoul", "--boribob.host-ip=$HOST_IP"]
