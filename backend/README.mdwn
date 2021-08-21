@@ -1,0 +1,85 @@
+# Log 분석 웹 백엔드
+
+- backend api & 기능 명세
+- check-list
+
+## 기능 목록
+
+- 총 4개의 칼럼
+  - **오늘의 트래픽 요약 Column**
+    - 요약 전체 보기 : `/api/traffics/summaries/` **GET**
+    - 모든 트래픽 수 : `/api/traffics/summaries/all` **GET**
+    - 공격 트래픽 수 : `/api/traffics/summaries/threat` **GET**
+    - 오늘의 보안 레벨 : `/api/traffics/summaries/level` **GET**
+  - **Main 트래픽 Dashboard**
+    - 하루 단위의 트래픽 량 : `/api/traffics?period=day` **GET**
+    - 1 시간 단위 트래픽 량 : `/api/traffics?period=hour` **GET**
+    - 5 분 단위 트래픽 량 : `/api/traffics?period=five-minute` **GET**
+  - **Log 검색하기**
+    - 최근의 모든 로그 확인하고 정렬 및 검색 : `/api/logs` **GET**
+  - **공격 유형 Dashboard**
+    - 최근의 공격 유형
+      1. xss : `/api/threats/xss` **GET**
+      2. web shell : `/api/threats/wshell` **GET**
+      3. sql injection : `/api/threats/sqli` **GET**
+      4. improper request - status code 가 올바르지 않은 경우 : `/api/threats/improper` **GET**
+
+## API
+
+- `/api/traffics/{period}`
+- `/api/traffics/summaries`
+- `/api/traffics/summaries/{type}`
+- `/api/logs/all`
+- `/api/logs/unknown`
+- `/api/threats/{type}`
+
+## Service
+
+- TrafficService
+  - 현재 시간을 기준으로 8 개의 트래픽 데이터를 반환
+    - 5분 단위 : 40분 전 까지
+    - 1시간 단위 : 8시간 전 까지
+    - 하루 단위 : 8일 전 까지
+- ThreatService
+  - 오늘의 모든 트래픽 수 : countByTimestamp(from, to) 를 이용
+  - 오늘의 모든 공격 트래픽 수 : countByTimestamp(from, to) 이용
+  - 오늘의 보안 레벨 : ??
+- LogService
+
+## Todo & Check List
+
+- [x] Layered 디렉토리 구성
+- [x] application.yml 생성 및 db 설정 & 연결
+- [x] normal 테이블 구성
+- [x] DateTime & LocalDateTime 비교 및 파싱
+- **TrafficService**
+  - Main 트래픽 Dashboard
+    - [x] TrafficService 구현 및 테스트 코드 작성
+      - [x] `ParameterizedTest` 로 각각의 PeriodType 마다의 테스트 자동화
+    - [x] DTO 생성 (id, count, timestamp)
+    - [x] TrafficController 구현 및 테스트 코드 작성
+    - [x] 테스트 커버리지 90% 이상 달성
+  - 오늘의 트래픽 요약 Column
+    - [x] Abnormal 테이블 구성
+    - [x] 공격 트래픽 수 작성
+    - [x] 오늘의 보안 레벨
+    - [x] summaries 를 전체로 반환하는 endpoint 구성
+- **ThreatService**
+  - 공격 트래픽 요약
+    - [x] front 에서 어떤 데이터로 그래프를 그리는지 확인하기 (그냥 개수만 세면 되는 거로 파악됨)
+    - [x] repository 쿼리 메서드 추가 `countAllByMalCodeBetween(from, to)`
+    - [x] ThreatService TDD
+    - [x] ThreatController TDD
+- **LogService**
+  - 모든 로그 보기
+    - [x] repository 쿼리 메서드 추가 `findTop100By(from, to)`
+    - [x] LogService TDD
+    - [x] LogController TDD
+  - 식별 불가 로그 보기
+    - [x] Entity 생성
+    - [x] repository 쿼리 메서드 추가 `findTop100By(from, to)`
+- **CORS 필터**
+  - [x] CORS 필터 적용하는 김에 블로그 포스팅하기
+- **Dummy Log** 추가
+  - [ ] import.sql 로 더미 로그 추가하기 & 포스팅
+- **API Documentation 채우기**

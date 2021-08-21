@@ -1,0 +1,6 @@
+{
+    "file": "/var/log/apache2/access.log",
+    "remote": "localhost",
+    "dport": "7777",
+    "lport": "0"
+}
