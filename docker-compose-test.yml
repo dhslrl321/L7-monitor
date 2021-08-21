@@ -3,7 +3,7 @@ version: "3"
 services:
   db:
     container_name: bori-db-container
-    image: lauvsong/bori-db:210821
+    image: lauvsong/bori-db:210815
     restart: always
     ports:
       - "3306:3306"
