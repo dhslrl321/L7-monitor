@@ -315,7 +315,7 @@ let lineChart = {
             content += label;
           }
 
-          content += "$" + yLabel + "k";
+          content += "" + yLabel + "";
           return content;
         },
       },

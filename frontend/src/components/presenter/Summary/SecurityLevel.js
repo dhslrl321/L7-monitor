@@ -35,7 +35,7 @@ const SecurityLevel = ({ level, description, ratio }) => {
                 alignItems="center"
               >
                 <Box />{" "}
-                {ratio}
+                {ratio*100}
               </Box>
               <Box component="span" whiteSpace="nowrap">
                 {description}
