@@ -6,13 +6,6 @@
 
 #### 해당 서비스는 사내의 **Web Application** 이 기존에 저장해놓은 **Access Log** 를 기반으로 Application Layer 에서의 트래픽을 분석하고 권고사항을 제안해주는 **통합 Dashboard** 를 제공한다.
 
-### 기능 목록
-
-- 실시간 트래픽 모니터링
-- 보안 위협 트래픽 분류 및 금일 보안 Level 제공
-- 로그 history 확인
-- 웹 공격에 따른 분류 및 시각화
-
 # 목차
 
 1. ### [팀원 소개](#-팀원-소개)
@@ -51,6 +44,8 @@
   - Container Presenter Pattern
     - [container](https://github.com/dhslrl321/L7-monitor/tree/master/frontend/src/components/container) 코드
     - [presenter](https://github.com/dhslrl321/L7-monitor/tree/master/frontend/src/components/presenter) 코드
+  - Build Time 의 동적 env 주입을 위한 shell-script
+    - [create-env-file.sh](https://github.com/dhslrl321/L7-monitor/blob/master/frontend/create-env-file.sh)
 - Back End
   - [Layered Architecture](https://github.com/dhslrl321/L7-monitor/tree/master/backend/src/main/java/com/example/l7monitor)
   - TDD 기반 Test Coverage 90% 이상 안정적인 API
@@ -77,9 +72,28 @@
 
 ![ui](https://github.com/dhslrl321/L7-monitor/blob/master/assets/ui.png)
 
+- **실시간 트래픽 모니터링**
+  - Line Graph
+  - 5분, 하루, 일주일 트래픽 시각화
+- **보안 위협 트래픽 분류 및 금일 보안 Level 제공**
+  - 정상 대비 악성 트래픽 비율 및 보안 수준
+- **로그 history 확인**
+  - Table Format
+  - 하루에 발생한 Full Log Format 시각화
+  - 식별 불가 로그의 시각화
+- **웹 공격에 따른 분류 및 시각화**
+  - Pie Chart
+  - SQL-Injection, RFI, XSS, Web-Shell 공격 분류 시각화
+
 # DB Schema
 
 ![db](https://github.com/dhslrl321/L7-monitor/blob/master/assets/db.png)
+
+- **Tables**
+  - total
+  - abnormal
+  - unknown_log
+  - mal_code
 
 # 🎥 시연 영상 및 사용법
 
