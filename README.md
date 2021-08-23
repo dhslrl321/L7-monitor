@@ -40,7 +40,7 @@
 
 ## 사용 기술 및 언어
 
-![skill](https://github.com/dhslrl321/https://github.com/dhslrl321/L7-monitor/assets/skill.png)
+![skill](https://github.com/dhslrl321/L7-monitor/blob/master/assets/skill.png)
 
 # 🪜 개발 및 배포 전략
 
@@ -70,15 +70,15 @@
 
 ## Service Flow
 
-![service-flow](https://github.com/dhslrl321/https://github.com/dhslrl321/L7-monitor/assets/service-flow.png)
+![service-flow](https://github.com/dhslrl321/L7-monitor/blob/master/assets/service-flow.png)
 
 ## User Interface
 
-![ui](https://github.com/dhslrl321/https://github.com/dhslrl321/L7-monitor/assets/ui.png)
+![ui](https://github.com/dhslrl321/L7-monitor/blob/master/assets/ui.png)
 
 ## DB Schema
 
-![db](https://github.com/dhslrl321/https://github.com/dhslrl321/L7-monitor/assets/db.png)
+![db](https://github.com/dhslrl321/L7-monitor/blob/master/assets/db.png)
 
 # 🎥 시연 영상 및 사용법
 
