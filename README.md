@@ -40,25 +40,27 @@
 
 ### 개발 전략
 
-- Front End
+- **Front End**
   - Container Presenter Pattern
     - [container](https://github.com/dhslrl321/L7-monitor/tree/master/frontend/src/components/container) 코드
     - [presenter](https://github.com/dhslrl321/L7-monitor/tree/master/frontend/src/components/presenter) 코드
   - Build Time 의 동적 env 주입을 위한 shell-script
     - [create-env-file.sh](https://github.com/dhslrl321/L7-monitor/blob/master/frontend/create-env-file.sh)
-- Back End
+- **Back End**
   - [Layered Architecture](https://github.com/dhslrl321/L7-monitor/tree/master/backend/src/main/java/com/example/l7monitor)
   - TDD 기반 Test Coverage 90% 이상 안정적인 API
     - [Test Codes](https://github.com/dhslrl321/L7-monitor/tree/master/backend/src/test/java/com/example/l7monitor)
     - [BDD by using BDDMockito](https://github.com/dhslrl321/L7-monitor/blob/master/backend/src/test/java/com/example/l7monitor/service/TrafficServiceTest.java)
+- **Agent & Daemon**
+  - Bottom Up For Modularization
 
 ### 배포 전략
 
-- Container Runtime : Docker
+- **Container Runtime : Docker**
   - [Front End Dockerfile](https://github.com/dhslrl321/L7-monitor/blob/master/frontend/Dockerfile)
   - [Back End Dockerfile](https://github.com/dhslrl321/L7-monitor/blob/master/backend/Dockerfile)
   - [Reverse Proxy Dockerfile](https://github.com/dhslrl321/L7-monitor/blob/master/reverse-proxy/Dockerfile)
-- Multiple Container Management Tool : docker-compose
+- **Multiple Container Management Tool : docker-compose**
   - 동적 IP Env 주입을 위한 Docker Build
   - service [docker-compose.yml](https://github.com/dhslrl321/L7-monitor/blob/master/docker-compose.yml)
 
