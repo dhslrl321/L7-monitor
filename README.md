@@ -84,7 +84,7 @@
 
 ## 시연 영상
 
-[![시연](https://img.youtube.com/vi/v_qsQnZcDeI/0.jpg)(https://www.youtube.com/watch?v=v_qsQnZcDeI)]
+[![시연](https://img.youtube.com/vi/v_qsQnZcDeI/0.jpg)](https://www.youtube.com/watch?v=v_qsQnZcDeI)
 
 ## 사용법
 
