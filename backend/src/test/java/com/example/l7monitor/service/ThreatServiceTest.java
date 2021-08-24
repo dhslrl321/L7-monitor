@@ -50,8 +50,8 @@ class ThreatServiceTest {
 
         assertAll(
                 () -> assertEquals(4, response.getSqli().getCount()),
-                () -> assertEquals(5, response.getRfi().getCount()),
-                () -> assertEquals(6, response.getWshell().getCount()),
+                () -> assertEquals(5, response.getWshell().getCount()),
+                () -> assertEquals(6, response.getRfi().getCount()),
                 () -> assertEquals(7, response.getXss().getCount())
         );
     }

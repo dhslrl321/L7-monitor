@@ -18,6 +18,7 @@ class MalCodeTest {
         MalCode xss = new MalCode(2, "XSS");
 
         assertEquals(1, sqlInjection.getCode());
+        assertEquals("SQL Injection", sqlInjection.getMalName());
         assertEquals(2, xss.getCode());
     }
 

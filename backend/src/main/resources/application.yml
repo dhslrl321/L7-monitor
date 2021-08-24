@@ -3,25 +3,25 @@ boribob:
 
 spring:
   # H2 콘솔 설정
-#  h2:
-#    console:
-#      path: /h2-console
-#      enabled: true
-#      settings:
-#        web-allow-others: true
-#  # DB 설정
-#  datasource:
-#    driver-class-name: org.h2.Driver
-#    url: jdbc:h2:mem:l7-monitor
-#    username: l7
-#    password:
-#
-#  # jpa 설정
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
+      settings:
+        web-allow-others: true
+  # DB 설정
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/bob_l7?characterEncoding=utf8
-    username: root
-    password: 1111
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:l7-monitor
+    username: l7
+    password:
+
+  # jpa 설정
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/bob_l7?characterEncoding=utf8
+#    username: root
+#    password: 1111
