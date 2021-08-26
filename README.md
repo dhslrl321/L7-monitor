@@ -1,5 +1,13 @@
 > BoB 10기 보안제품개발 트랙 1차 팀 프로젝트
 
+#### 블로그 포스팅 1. [팀 빌딩 및 협업에 대한 고민](https://wonit.tistory.com/577) @Tistory
+
+#### 블로그 포스팅 2. [프론트엔드 기술 선정과 고민들](https://wonit.tistory.com/578?category=869199) @Tistory
+
+#### 블로그 포스팅 3. [백엔드를 개발하며 했던 고민들](https://wonit.tistory.com/579?category=869199) @Tistory
+
+#### 블로그 포스팅 4. [인프라 개발과 배포를 하며 만난 고민들](https://wonit.tistory.com/580?category=869199) @Tistory
+
 # 🖥 L7 에서 동작하는 Access Log 기반 트래픽 분석 및 보안 위협 분석 서비스
 
 > SW 인재 대란 속에서 잘 하는 개발자, 관리자를 뽑은 것이 힘들어진 요즘 기업의 입장에서는 새로운 인력을 채용하는 것이 부담으로 다가갈 수 있다.
