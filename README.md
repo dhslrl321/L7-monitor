@@ -16,7 +16,7 @@
 <img style="margin: 15px" src="https://img.shields.io/badge/react.js-17.0.2-9cf.svg" alt="badge-react" />
 <img style="margin: 15px" src="https://img.shields.io/badge/SpringBoot-2.5.4-green.svg" alt="badge-react" />
 <img style="margin: 15px" src="https://img.shields.io/badge/QueryDsl-4.4.0-success.svg" alt="badge-react"/>
-<img style="margin: 15px" src="https://img.shields.io/badge/Nginx-2.5.4-green.svg" alt="badge-react" />
+<img style="margin: 15px" src="https://img.shields.io/badge/Nginx-1.18.0-green.svg" alt="badge-react" />
 </div>
 
 #### 해당 서비스는 BoB 10기 보안제품개발 트랙의 1차 팀 프로젝트로, 사내의 **Web Application** 이 기존에 저장해놓은 **Access Log** 를 기반으로 Application Layer 에서의 트래픽을 분석하고 권고사항을 제안해주는 **통합 Dashboard** 를 제공한다.
